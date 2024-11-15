@@ -31,8 +31,6 @@ public class Starter {
     private static final Logger logger = LoggerFactory.getLogger(Starter.class);
 
     public static void main(String[] args) {
-
-        // TODO -- should we have the user specify the amount as command line input?
         TransactionDetails details = new TransactionDetails("Tom", "Ted", "XF12345", 100);
 
         WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newLocalServiceStubs();
