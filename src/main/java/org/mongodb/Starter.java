@@ -31,7 +31,18 @@ public class Starter {
     private static final Logger logger = LoggerFactory.getLogger(Starter.class);
 
     public static void main(String[] args) {
-        TransactionDetails details = new TransactionDetails("Tom", "Ted", "XF12345", 100);
+        // defaults to transferring $100, but you can specify a different amount at runtime
+        int transferAmount = 100;
+        if (args.length == 1) {
+            try {
+                transferAmount = Integer.valueOf(args[0]);
+            } catch (NumberFormatException nfe) {
+                logger.error("Could not parse specified amount: " + args[0], nfe);
+            }
+        }
+
+        TransactionDetails details = new TransactionDetails("Tom", "Ted", "XF12345", transferAmount);
+        logger.info("Will transfer {} from {} to {}", details.getAmount(), details.getSender(), details.getRecipient());
 
         WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newLocalServiceStubs();
         WorkflowClient client = WorkflowClient.newInstance(serviceStub);
@@ -43,7 +54,7 @@ public class Starter {
         MoneyTransferWorkflow workflow = client.newWorkflowStub(MoneyTransferWorkflow.class, options);
         String confirmation = workflow.transfer(details);
 
-        System.out.printf("Money Transfer complete. Confirmation: %s", confirmation);
+        System.out.printf("Money Transfer complete. Confirmation: %s\n", confirmation);
 
         System.exit(0);
     }
