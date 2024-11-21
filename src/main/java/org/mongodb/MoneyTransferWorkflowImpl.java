@@ -20,9 +20,23 @@ public class MoneyTransferWorkflowImpl implements MoneyTransferWorkflow {
 
     private final AccountActivities activitiesStub = Workflow.newActivityStub(AccountActivities.class, options);
 
+    // Small transfers have manager approval by default
+    private boolean hasManagerApproval = true;
+
     @Override
     public String transfer(TransactionDetails input) {
         logger.info("Starting Money Transfer Workflow");
+
+        // Large transfers must be explicitly approved by a manager
+        if (input.getAmount() > 500) {
+            logger.info("This transfer is on hold awaiting manager approval");
+            hasManagerApproval = false;
+        }
+
+        // The Workflow blocks here awaiting approval, if that was required. This approval
+        // is sent using a Signal. When that Signal is received, the approve(String) method
+        // is invoked and sets hasManagerApproval to true, causing the Workflow to proceed.
+        Workflow.await(() -> hasManagerApproval);
 
         // TODO - consider refactoring to have a different input parameter for the Activities
         // (e.g., AccountOperationDetails) that only lists the relevant account and then
@@ -41,7 +55,14 @@ public class MoneyTransferWorkflowImpl implements MoneyTransferWorkflow {
 
         String confirmation = String.format("Withdrawal TXID: %s, Deposit TXID: %s", wdConf, depConf);
 
-        logger.info("Starting Money Transfer Workflow now complete. Confirmation: ", confirmation);
+        logger.info("Money Transfer Workflow now complete. Confirmation: {}", confirmation);
         return confirmation;
+    }
+
+
+    @Override
+    public void approve(String managerName) {
+        logger.info("This transfer has now been approved by {}", managerName);
+        hasManagerApproval = true;
     }
 }

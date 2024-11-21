@@ -56,8 +56,27 @@
    by specifying a reason and terminating the Workflow. Both of those operations 
    can be performed with the `temporal` CLI, but we could also update the web
    app to support that (I can write the Java code for doing both operations). 
-   NOTE: Although the four scenarios above can all be done with the current 
-   code, I have not written the code to support this one yet.
+
+   The code now supports this. To try it, initiate a transfer for more than
+   $500:
+
+   ```bash
+   $ mvn compile exec:java \
+       -Dexec.mainClass="org.mongodb.Starter" \
+	   -Dexec.arguments="600"
+   ```
+
+   The Workflow Execution will begin, but immediately block while awaiting
+   approval. You can send a Signal to grant that approval using the CLI
+   (the strange quoting for the `--input` argument is intentional, as the 
+   provided value must be in JSON format):
+
+   ```bash
+   $ temporal workflow signal \
+       --workflow-id transfer-workflow-XF12345 \
+	   --name approve --input '"Ron Smith"'
+   ```
+
 
 ## Open Questions
 
@@ -68,7 +87,6 @@
 
 ## TODOs and notes to self
 * Write unit tests
-* Write code (Signal handler) and instructions for the Human-in-the-Loop scenario
 * Evaluate how I do error handling in this application. I want the example to seem
   somewhat realistic, but I also want to keep it clear and simple (especially for
   the core business logic).

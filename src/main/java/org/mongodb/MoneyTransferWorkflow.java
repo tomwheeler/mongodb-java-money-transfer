@@ -1,5 +1,6 @@
 package org.mongodb;
 
+import io.temporal.workflow.SignalMethod;
 import io.temporal.workflow.WorkflowInterface;
 import io.temporal.workflow.WorkflowMethod;
 
@@ -18,4 +19,12 @@ public interface MoneyTransferWorkflow {
     @WorkflowMethod
     String transfer(TransactionDetails input);
 
+    /**
+     * Defines the method invoked to approve a large transfer that is blocked as it awaits
+     * manager approval
+     *
+     * @param managerName the name of the manager who approved the transfer
+     */
+    @SignalMethod
+    void approve(String managerName);
 }
