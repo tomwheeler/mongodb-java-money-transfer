@@ -31,7 +31,7 @@ public class Starter {
     private static final Logger logger = LoggerFactory.getLogger(Starter.class);
 
     public static void main(String[] args) {
-        TransactionDetails details = new TransactionDetails("Tom", "Ted", "XF12345", 100);
+        TransactionDetails details = new TransactionDetails("Tom", "Ted", "XF12345", 100, "key1");
 
         WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newLocalServiceStubs();
         WorkflowClient client = WorkflowClient.newInstance(serviceStub);

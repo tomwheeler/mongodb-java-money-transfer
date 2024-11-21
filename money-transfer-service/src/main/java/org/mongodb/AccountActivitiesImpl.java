@@ -7,6 +7,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,8 @@ public class AccountActivitiesImpl implements AccountActivities {
         // TODO: should probably include reference ID as idempotency key, but that makes
         // it harder to observe hat Temporal doesn't repeat the withdrawal operation if
         // the Workflow is terminated and restarted. I need to think about this some more.
-        String serviceUrl = String.format("http://localhost:8888/withdraw?amount=%d", input.getAmount());
+        String serviceUrl = String.format("http://localhost:8080/withdraw?amount=%d&idempotency-key=%s",
+                input.getAmount(), input.getReferenceId());
         String transactionId = null;
         try {
             transactionId = callService(serviceUrl);
@@ -45,7 +47,8 @@ public class AccountActivitiesImpl implements AccountActivities {
     public String deposit(TransactionDetails input) {
         logger.info("Starting deposit operation");
 
-        String serviceUrl = String.format("http://localhost:8889/deposit?amount=%d", input.getAmount());
+        String serviceUrl = String.format("http://localhost:8080/deposit?amount=%d&idempotency-key=%s",
+                input.getAmount(), input.getReferenceId());
         String transactionId = null;
         try {
             transactionId = callService(serviceUrl);
@@ -69,29 +72,25 @@ public class AccountActivitiesImpl implements AccountActivities {
      */
     private String callService(String serviceUrl) throws IOException, AccountOperationException {
         URI uri = URI.create(serviceUrl);
-
         HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                    .uri(uri)
-                    .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(uri).build();
 
-        // WARNING: this is a hacky implementation -- I need to clean this up
-        String transactionId = null;
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            String body = response.body();
-
-            if (body.startsWith("ERROR: ")) {
-                throw new AccountOperationException(body);
+            if (response.statusCode() != 200) {
+                throw new AccountOperationException("Error from banking service: " + response.body());
             }
 
-            if (body.startsWith("SUCCESS: ") && body.contains("transaction-id=")) {
-                 transactionId = body.split("transaction-id=")[1];
+            // Parse JSON response
+            Map<String, Object> result = JsonUtil.toMap(response.body());
+            if (!"SUCCESS".equals(result.get("status"))) {
+                throw new AccountOperationException((String) result.get("message"));
             }
-        } catch (InterruptedException ie) {
-            throw new IOException("HTTP Client operation interrupted", ie);
+
+            return (String) result.get("transaction-id");
+        } catch (InterruptedException e) {
+            throw new IOException("HTTP Client operation interrupted", e);
         }
-
-        return transactionId;
     }
+
 }

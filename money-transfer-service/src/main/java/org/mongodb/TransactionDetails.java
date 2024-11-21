@@ -6,15 +6,25 @@ public class TransactionDetails {
     private String recipient;
     private String referenceId;
     private int amount;
+    private String idempotencyKey;
 
     public TransactionDetails() {
     }
 
-    public TransactionDetails(String sender, String recipient, String referenceId, int amount) {
+    public TransactionDetails(String sender, String recipient, String referenceId, int amount, String idempotencyKey) {
         this.sender = sender;
         this.recipient = recipient;
         this.referenceId = referenceId;
         this.amount = amount;
+        this.idempotencyKey = idempotencyKey;
+    }
+
+    public String getIdempotencyKey() {
+        return idempotencyKey;
+    }
+
+    public void setIdempotencyKey(String idempotencyKey) {
+        this.idempotencyKey = idempotencyKey;
     }
 
     public String getSender() {
