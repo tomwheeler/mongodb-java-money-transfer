@@ -78,24 +78,10 @@
    ```
 
 
-## Open Questions
-
 ### Licensing
-* How should the code be licensed? My preference would be MIT, with attribution 
-  to both MongoDB and Temporal, but if that's not possible we can discuss 
-  alternatives.
+* Tim and I agreed that we should use the MIT license for the code, with attribution 
+  to both MongoDB and Temporal
 
-## TODOs and notes to self
-* Write unit tests
-* Evaluate how I do error handling in this application. I want the example to seem
-  somewhat realistic, but I also want to keep it clear and simple (especially for
-  the core business logic).
-   * Do we want to continue sending both success and error messages in the 
-     response body or should we distinguish those by using HTTP status codes? 
-   * Should the body use a format with more structure (such as XML or JSON) 
-     so we can parse it and retrieve details more reliably? 
-   * I should evaluate the need for `AccountOperationException` (and potentially 
-     subclasses) for use in a custom RetryPolicy where we could designate an 
-	 insufficient funds error as non-retryable.
-* Add a few more comments in the code to explain what it's doing
+## TODOs 
+* Possibly add a unit test or two for the Activities
   

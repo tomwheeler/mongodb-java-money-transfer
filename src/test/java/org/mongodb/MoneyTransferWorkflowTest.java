@@ -1,16 +1,16 @@
 package org.mongodb;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import io.temporal.api.common.v1.WorkflowExecution;
 import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowOptions;
 import io.temporal.testing.TestWorkflowEnvironment;
 import io.temporal.worker.Worker;
-import io.temporal.client.WorkflowException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import org.junit.After;
 import org.junit.Before;
@@ -36,12 +36,12 @@ public class MoneyTransferWorkflowTest {
     }
 
     @Test
-    public void testTransfer() {
+    public void testBasicTransfer() {
         AccountActivities activities = mock(AccountActivitiesImpl.class);
         worker.registerActivitiesImplementations(activities);
         testEnv.start();
 
-        TransactionDetails details = new TransactionDetails("alice", "bob", "xyz123", 100);
+        TransactionDetails details = new TransactionDetails("alice", "bob", "abc123", 100);
 
         WorkflowOptions options = WorkflowOptions.newBuilder()
                 .setTaskQueue(ApplicationWorker.TASK_QUEUE_NAME)
@@ -56,6 +56,42 @@ public class MoneyTransferWorkflowTest {
         verify(activities, times(1)).deposit(details);
     }
 
-    // TODO - write a test to exercise the human-in-the-loop transfer scenario
+    @Test
+    public void testTransferWithManagerApproval() throws ExecutionException, InterruptedException {
+        AccountActivities activities = mock(AccountActivitiesImpl.class);
+        worker.registerActivitiesImplementations(activities);
+        testEnv.start();
+
+        TransactionDetails details = new TransactionDetails("carlos", "diana", "xyz789", 750);
+
+        WorkflowOptions options = WorkflowOptions.newBuilder()
+                .setTaskQueue(ApplicationWorker.TASK_QUEUE_NAME)
+                .setWorkflowId("transfer-workflow-" + details.getReferenceId())
+                .build();
+
+        MoneyTransferWorkflow workflow = workflowClient.newWorkflowStub(MoneyTransferWorkflow.class, options);
+
+        // Since this unit test verifies the human-in-the-loop example in which the
+        // transfer awaits manager approval before proceeding, it starts the Workflow
+        // Execution asynchronously
+        CompletableFuture<String> result = WorkflowClient.execute(workflow::transfer, details);
+
+        // Although the Workflow Execution has started, it is immediately placed on hold, and
+        // neither of these Activities should have been called yet.
+        verify(activities, times(0)).withdraw(details);
+        verify(activities, times(0)).deposit(details);
+
+        // Calling the Signal method allows the transfer to proceed
+        workflow.approve("Maria Manager");
+
+        // When the result is available, the Workflow Execution is complete
+        String confirmation = result.get();
+        assertTrue(confirmation.contains("Withdrawal TXID"));
+        assertTrue(confirmation.contains("Deposit TXID"));
+
+        // Both the withdrawal and deposit took place
+        verify(activities, times(1)).withdraw(details);
+        verify(activities, times(1)).deposit(details);
+    }
 
 }
