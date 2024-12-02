@@ -1,7 +1,9 @@
-package org.mongodb;
+package org.mongodb.workflows;
 
 import io.temporal.activity.ActivityOptions;
 import io.temporal.workflow.Workflow;
+import org.mongodb.activities.AccountActivities;
+import org.mongodb.models.TransactionDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

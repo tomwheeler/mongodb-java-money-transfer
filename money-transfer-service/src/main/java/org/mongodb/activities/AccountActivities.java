@@ -1,7 +1,8 @@
-package org.mongodb;
+package org.mongodb.activities;
 
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
+import org.mongodb.models.TransactionDetails;
 
 /**
  * Declares the operations that are used to carry out the money transfer.

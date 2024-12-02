@@ -3,6 +3,9 @@ package org.mongodb;
 import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowOptions;
 import io.temporal.serviceclient.WorkflowServiceStubs;
+import org.mongodb.models.TransactionDetails;
+import org.mongodb.workers.ApplicationWorker;
+import org.mongodb.workflows.MoneyTransferWorkflow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

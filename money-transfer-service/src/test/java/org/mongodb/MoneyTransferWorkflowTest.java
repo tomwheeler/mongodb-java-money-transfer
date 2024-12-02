@@ -15,6 +15,12 @@ import java.util.concurrent.ExecutionException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mongodb.activities.AccountActivities;
+import org.mongodb.activities.AccountActivitiesImpl;
+import org.mongodb.models.TransactionDetails;
+import org.mongodb.workers.ApplicationWorker;
+import org.mongodb.workflows.MoneyTransferWorkflow;
+import org.mongodb.workflows.MoneyTransferWorkflowImpl;
 
 public class MoneyTransferWorkflowTest {
 

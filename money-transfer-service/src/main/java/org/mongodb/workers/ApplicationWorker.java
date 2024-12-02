@@ -1,9 +1,12 @@
-package org.mongodb;
+package org.mongodb.workers;
 
 import io.temporal.client.WorkflowClient;
 import io.temporal.serviceclient.WorkflowServiceStubs;
 import io.temporal.worker.Worker;
 import io.temporal.worker.WorkerFactory;
+import org.mongodb.activities.AccountActivities;
+import org.mongodb.activities.AccountActivitiesImpl;
+import org.mongodb.workflows.MoneyTransferWorkflowImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

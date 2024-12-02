@@ -1,4 +1,4 @@
-package org.mongodb;
+package org.mongodb.exceptions;
 
 /**
  * Represents a business-level failure encountered during an operation on

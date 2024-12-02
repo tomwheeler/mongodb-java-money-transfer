@@ -1,4 +1,4 @@
-package org.mongodb;
+package org.mongodb.activities;
 
 import io.temporal.activity.Activity;
 
@@ -8,6 +8,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import org.mongodb.exceptions.AccountOperationException;
+import org.mongodb.models.TransactionDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +34,7 @@ public class AccountActivitiesImpl implements AccountActivities {
         String transactionId = null;
         try {
             transactionId = callService(serviceUrl);
-        } catch (IOException| AccountOperationException e) {
+        } catch (IOException | AccountOperationException e) {
             logger.error("Withdraw operation failed", e);
             throw Activity.wrap(e);
         }

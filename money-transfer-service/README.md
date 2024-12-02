@@ -4,9 +4,9 @@
 
 1. Start the banking services (and optionally, the GUI showing the status 
    and account balances)
-2. Run the `main` method in the `org.mongodb.ApplicationWorker` class (I'm 
+2. Run the `main` method in the `org.mongodb.workers.ApplicationWorker` class (I'm 
    just doing it from the IDE right now, but you could also run 
-   `mvn compile exec:java -Dexec.mainClass="org.mongodb.ApplicationWorker"`
+   `mvn compile exec:java -Dexec.mainClass="org.mongodb.workers.ApplicationWorker"`
    to do it)
 3. Run the `main` method in the `org.mongodb.Starter` class (from the IDE
    or `mvn compile exec:java -Dexec.mainClass="org.mongodb.Starter"`)

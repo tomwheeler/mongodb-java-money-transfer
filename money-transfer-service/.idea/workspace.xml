@@ -4,29 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="041ddcb5-8ad6-466a-b4e1-43898404d501" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/bank-services/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/src/main/java/com/mongodb/banking/Bank.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/src/main/java/com/mongodb/banking/BankClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/src/main/java/com/mongodb/banking/BankController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/src/main/java/com/mongodb/banking/BankService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/src/main/java/com/mongodb/banking/JsonUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/src/main/java/com/mongodb/banking/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/src/main/java/com/mongodb/banking/exceptions/InsufficientFundsException.java" afterDir="false" />
-    </list>
+    <list default="true" id="041ddcb5-8ad6-466a-b4e1-43898404d501" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -48,20 +33,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/tim.kelly/Documents/JavaProjects/mongodb-java-money-transfer&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "refactor",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/tim.kelly/Documents/JavaProjects/mongodb-java-money-transfer/money-transfer-service",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -83,6 +68,7 @@
       <workItem from="1732189944042" duration="21000" />
       <workItem from="1732201870660" duration="158000" />
       <workItem from="1732705138944" duration="200000" />
+      <workItem from="1732710201029" duration="191000" />
     </task>
     <servers />
   </component>

@@ -1,8 +1,9 @@
-package org.mongodb;
+package org.mongodb.workflows;
 
 import io.temporal.workflow.SignalMethod;
 import io.temporal.workflow.WorkflowInterface;
 import io.temporal.workflow.WorkflowMethod;
+import org.mongodb.models.TransactionDetails;
 
 /**
  * Defines the Workflow used for money transfer.

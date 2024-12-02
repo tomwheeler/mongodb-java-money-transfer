@@ -1,4 +1,4 @@
-package org.mongodb;
+package org.mongodb.models;
 
 import java.util.Objects;
 
