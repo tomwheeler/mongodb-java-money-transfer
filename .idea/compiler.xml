@@ -6,9 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="bank-services" />
         <module name="TemporalMoneyTransfer" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="bank-services" target="21" />
+    </bytecodeTargetLevel>
   </component>
 </project>
