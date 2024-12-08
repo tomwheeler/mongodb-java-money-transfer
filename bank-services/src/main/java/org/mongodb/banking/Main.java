@@ -5,6 +5,9 @@ import org.mongodb.banking.config.MongodbConfig;
 import org.mongodb.banking.repository.BankRepositoryImpl;
 
 public class Main {
+
+    private static int SERVICE_PORT = 8080;
+
     public static void main(String[] args) {
         try {
             // Set up MongoDB connection
@@ -15,10 +18,10 @@ public class Main {
             BankManager manager = new BankManager(repository);
 
             // Start the server
-            BankController controller = new BankController(manager, 8080);
+            BankController controller = new BankController(manager, SERVICE_PORT);
             controller.start();
 
-            System.out.println("Banking service is running at http://localhost:8080");
+            System.out.printf("Banking service is running at http://localhost:%d\n", SERVICE_PORT);
         } catch (Exception e) {
             System.err.println("Failed to start the banking service: " + e.getMessage());
             e.printStackTrace();
