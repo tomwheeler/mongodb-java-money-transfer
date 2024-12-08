@@ -8,8 +8,20 @@ public class MongodbConfig {
     private static final String CONNECTION_STRING = System.getenv("MONGO_CONNECTION_STRING");
     private static final String DATABASE_NAME = "banking";
 
+    /**
+     * Returns the database with the default name, accessible through a connection
+     * string defined in the <code>MONGO_CONNECTION_STRING</code> environment variable.
+     */
     public static MongoDatabase getDatabase() {
-        MongoClient client = MongoClients.create(CONNECTION_STRING);
-        return client.getDatabase(DATABASE_NAME);
+        return getDatabase(CONNECTION_STRING, DATABASE_NAME);
+    }
+
+    /**
+     * Returns the database with the specified name, accessible through the specified
+     * connection string.
+     */
+    public static MongoDatabase getDatabase(String databaseName, String connectionString) {
+        MongoClient client = MongoClients.create(connectionString);
+        return client.getDatabase(databaseName);
     }
 }
