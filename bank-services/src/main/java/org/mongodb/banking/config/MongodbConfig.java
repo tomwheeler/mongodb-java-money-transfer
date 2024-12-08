@@ -13,7 +13,7 @@ public class MongodbConfig {
      * string defined in the <code>MONGO_CONNECTION_STRING</code> environment variable.
      */
     public static MongoDatabase getDatabase() {
-        return getDatabase(CONNECTION_STRING, DATABASE_NAME);
+        return getDatabase(DATABASE_NAME, CONNECTION_STRING);
     }
 
     /**
