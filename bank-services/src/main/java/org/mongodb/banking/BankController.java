@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.util.List;
 import java.util.Map;
 
 public class BankController {
@@ -73,6 +74,20 @@ public class BankController {
 
                 manager.getOrCreateBank(bankName).createBank(bankName, initialBalance);
                 sendResponse(exchange, Map.of("status", "SUCCESS", "message", "Bank created successfully"));
+            } catch (Exception e) {
+                sendError(exchange, e.getMessage());
+            }
+        });
+
+        server.createContext("/api/listBanks", exchange -> {
+            try {
+                if (!"GET".equals(exchange.getRequestMethod())) {
+                    sendError(exchange, "Only GET requests are allowed");
+                    return;
+                }
+
+                List<String> banks = manager.getAllBankNames();
+                sendResponse(exchange, Map.of("status", "SUCCESS", "banks", banks));
             } catch (Exception e) {
                 sendError(exchange, e.getMessage());
             }
