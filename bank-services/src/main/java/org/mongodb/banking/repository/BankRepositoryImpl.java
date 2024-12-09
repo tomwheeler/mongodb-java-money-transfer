@@ -53,8 +53,6 @@ public class BankRepositoryImpl implements BankRepository {
         }
 
         accountsCollection.insertOne(new Document("bankName", bankName).append("balance", initialBalance));
-
-        accountsCollection.insertOne(bank);
     }
 
     @Override
