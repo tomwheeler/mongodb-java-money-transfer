@@ -30,7 +30,6 @@ public class BankService {
     }
 
     public void createBank(String bankName, int initialBalance) {
-        checkAvailability(bankName);
         Document account = repository.findAccountByBankName(bankName);
         if (account != null) {
             throw new IllegalArgumentException("Bank with name " + bankName + " already exists.");
