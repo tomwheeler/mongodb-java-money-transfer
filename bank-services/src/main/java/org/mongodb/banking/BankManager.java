@@ -3,6 +3,7 @@ package org.mongodb.banking;
 import org.mongodb.banking.repository.BankRepository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class BankManager {
@@ -16,4 +17,9 @@ public class BankManager {
     public BankService getOrCreateBank(String bankName) {
         return banks.computeIfAbsent(bankName, name -> new BankService(repository));
     }
+
+    List<String> getAllBankNames() {
+        return repository.getAllBankNames();
+    }
+
 }
