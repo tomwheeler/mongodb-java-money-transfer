@@ -13,5 +13,7 @@ public interface BankRepository {
 
     void createAccount(String bankName, int initialBalance);
 
+    boolean deleteAccount(String bankName);
+
     List<String> getAllBankNames();
 }

@@ -3,6 +3,8 @@ package org.mongodb.banking.repository;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import static com.mongodb.client.model.Filters.lt;
+import org.bson.conversions.Bson;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,12 +44,31 @@ public class BankRepositoryImpl implements BankRepository {
 
     @Override
     public void createAccount(String bankName, int initialBalance) {
+        if (bankName == null || bankName.trim().length() == 0) {
+            throw new IllegalArgumentException("Invalid bank name '" + bankName + "'");
+        }
+
+        if (initialBalance < 0) {
+            throw new IllegalArgumentException("Initial balance must be >= 0");
+        }
+
         accountsCollection.insertOne(new Document("bankName", bankName).append("balance", initialBalance));
+
+        accountsCollection.insertOne(bank);
     }
 
-    /**
-     * Fetches all bank names from the database.
-     */
+    @Override
+    public boolean deleteAccount(String bankName) {
+        if (bankName == null || bankName.trim().length() == 0) {
+            return false;
+        }
+
+        Bson query = eq("bankName", bankName);
+        accountsCollection.deleteMany(query);
+
+        return true;
+    }
+
     @Override
     public List<String> getAllBankNames() {
         return StreamSupport.stream(accountsCollection.find().spliterator(), false)
