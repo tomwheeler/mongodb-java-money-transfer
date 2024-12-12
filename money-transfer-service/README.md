@@ -9,7 +9,7 @@
    `mvn compile exec:java -Dexec.mainClass="org.mongodb.workers.ApplicationWorker"`
    to do it)
 3. Run the `main` method in the `org.mongodb.Starter` class (from the IDE
-   or `mvn compile exec:java -Dexec.mainClass="org.mongodb.Starter"`)
+   or `mvn compile exec:java -Dexec.mainClass="org.mongodb.Starter" -Dexec.args="Alice Bob 100"`)
 
 
 ## Potential demonstrations for the tutorial
@@ -54,8 +54,11 @@
    We can place a hold on any transfer over some threshold (e.g., $500). A 
    manager could release the hold by sending a Signal or reject the transfer 
    by specifying a reason and terminating the Workflow. Both of those operations 
-   can be performed with the `temporal` CLI, but we could also update the web
-   app to support that (I can write the Java code for doing both operations). 
+   can be performed with the `temporal` CLI. You can also use the Temporal 
+   Web UI to approve the transfer (which uses a method provided by Temporal's 
+   Java API to send the Signal). If you want to terminate the Workflow Execution
+   (that is, halt the transaction), you can use the terminate feature in the 
+   Temporal Web UI.
 
    The code now supports this. To try it, initiate a transfer for more than
    $500:
@@ -63,7 +66,7 @@
    ```bash
    $ mvn compile exec:java \
        -Dexec.mainClass="org.mongodb.Starter" \
-	   -Dexec.arguments="600"
+	   -Dexec.args="Alice Bob 100"
    ```
 
    The Workflow Execution will begin, but immediately block while awaiting
@@ -82,6 +85,3 @@
 * Tim and I agreed that we should use the MIT license for the code, with attribution 
   to both MongoDB and Temporal
 
-## TODOs 
-* Possibly add a unit test or two for the Activities
-  

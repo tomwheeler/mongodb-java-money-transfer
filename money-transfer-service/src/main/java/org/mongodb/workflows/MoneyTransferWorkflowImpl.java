@@ -14,7 +14,7 @@ import java.time.Duration;
  */
 public class MoneyTransferWorkflowImpl implements MoneyTransferWorkflow {
 
-    private static final Logger logger = LoggerFactory.getLogger(MoneyTransferWorkflowImpl.class);
+    private static final Logger logger = Workflow.getLogger(MoneyTransferWorkflowImpl.class);
 
     private final ActivityOptions options = ActivityOptions.newBuilder()
             .setStartToCloseTimeout(Duration.ofSeconds(10))

@@ -9,6 +9,8 @@ import org.mongodb.workflows.MoneyTransferWorkflow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.UUID;
+
 
 /**
  * This class provides a main method that, when invoked, initiates a new money transfer.
@@ -34,30 +36,51 @@ public class Starter {
     private static final Logger logger = LoggerFactory.getLogger(Starter.class);
 
     public static void main(String[] args) {
-        // defaults to transferring $100, but you can specify a different amount at runtime
-        int transferAmount = 100;
-        if (args.length == 1) {
-            try {
-                transferAmount = Integer.valueOf(args[0]);
-            } catch (NumberFormatException nfe) {
-                logger.error("Could not parse specified amount: " + args[0], nfe);
-            }
+        if (args.length != 3) {
+            System.out.println("Incorrect number of arguments specified.");
+            System.out.println("Format: SENDER RECIPIENT AMOUNT");
+            System.exit(1);
         }
 
-        TransactionDetails details = new TransactionDetails("Tom", "Ted", "XF12345", transferAmount);
-        logger.info("Will transfer {} from {} to {}", details.getAmount(), details.getSender(), details.getRecipient());
+        String sender = args[0];
+        if (sender == null || sender.trim().length() < 1) {
+            System.err.println("Sender name must not be empty");
+            System.exit(1);
+        }
+
+        String recipient = args[1];
+        if (recipient == null || recipient.trim().length() < 1) {
+            System.err.println("Recipient name must not be empty");
+            System.exit(1);
+        }
+
+        int transferAmount = -1;
+        try {
+            transferAmount = Integer.valueOf(args[2]);
+        } catch (NumberFormatException nfe) {
+            System.err.println("Could not parse specified amount: " + args[0]);
+            System.err.println(nfe);
+            System.exit(1);
+        }
+
+        String idempotencyKey = UUID.randomUUID().toString();
+
+        TransactionDetails details = new TransactionDetails(sender, recipient, idempotencyKey, transferAmount);
+        logger.info("Will transfer {} from {} to {}", transferAmount, sender, recipient);
+
+        String workflowId = String.format("transfer-%d-%s-to-%s", transferAmount, sender, recipient);
 
         WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newLocalServiceStubs();
         WorkflowClient client = WorkflowClient.newInstance(serviceStub);
         WorkflowOptions options = WorkflowOptions.newBuilder()
                 .setTaskQueue(ApplicationWorker.TASK_QUEUE_NAME)
-                .setWorkflowId("transfer-workflow-" + details.getReferenceId())
+                .setWorkflowId(workflowId)
                 .build();
 
         MoneyTransferWorkflow workflow = client.newWorkflowStub(MoneyTransferWorkflow.class, options);
         String confirmation = workflow.transfer(details);
 
-        System.out.printf("Money Transfer complete. Confirmation: %s\n", confirmation);
+        logger.info("Money Transfer complete. Confirmation: " + confirmation);
 
         System.exit(0);
     }
