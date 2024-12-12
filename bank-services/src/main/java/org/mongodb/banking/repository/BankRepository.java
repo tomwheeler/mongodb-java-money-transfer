@@ -5,6 +5,7 @@ import org.bson.Document;
 import java.util.List;
 
 public interface BankRepository {
+
     Document findAccountByBankName(String bankName);
 
     void updateBalance(String bankName, int newBalance);

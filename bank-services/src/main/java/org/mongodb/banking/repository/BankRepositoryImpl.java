@@ -3,7 +3,6 @@ package org.mongodb.banking.repository;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import static com.mongodb.client.model.Filters.lt;
 import org.bson.conversions.Bson;
 
 import java.util.List;
@@ -14,6 +13,7 @@ import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.set;
 
 public class BankRepositoryImpl implements BankRepository {
+
     private final MongoCollection<Document> accountsCollection;
     private final MongoCollection<Document> transactionsCollection;
 
@@ -35,10 +35,10 @@ public class BankRepositoryImpl implements BankRepository {
     @Override
     public void logTransaction(String type, int amount, String transactionId, String idempotencyKey, String bankName) {
         Document transaction = new Document("type", type)
-                .append("amount", amount)
-                .append("transactionId", transactionId)
-                .append("idempotencyKey", idempotencyKey)
-                .append("bankName", bankName);
+            .append("amount", amount)
+            .append("transactionId", transactionId)
+            .append("idempotencyKey", idempotencyKey)
+            .append("bankName", bankName);
         transactionsCollection.insertOne(transaction);
     }
 
@@ -70,7 +70,7 @@ public class BankRepositoryImpl implements BankRepository {
     @Override
     public List<String> getAllBankNames() {
         return StreamSupport.stream(accountsCollection.find().spliterator(), false)
-                .map(doc -> doc.getString("bankName"))
-                .collect(Collectors.toList());
+            .map(doc -> doc.getString("bankName"))
+            .collect(Collectors.toList());
     }
 }
