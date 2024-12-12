@@ -1,5 +1,6 @@
 package org.mongodb.banking;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mongodb.banking.config.MongodbConfig;
@@ -19,15 +20,13 @@ public class BankTest {
     public void setUp() throws Exception {
         repo = new BankRepositoryImpl(MongodbConfig.getDatabase("banking", "mongodb://127.0.0.1:27017"));
 
-        // account only needs to be created during first run; otherwise just reset the
-        // existing balance to a known amount to establish a baseline for testing.
-        if (repo.findAccountByBankName(name) == null) {
-            repo.createAccount(name, initialBalance);
-        } else {
-            repo.updateBalance(name, initialBalance);
-        }
-
+        repo.createAccount(name, initialBalance);
         bank = new Bank(name, repo);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        repo.deleteAccount(name);
     }
 
     @Test
