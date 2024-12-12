@@ -6,14 +6,21 @@ import org.mongodb.banking.repository.BankRepository;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Bank {
+    
+    private static final Logger logger = LoggerFactory.getLogger(Bank.class);
+
     private final String name;
     private int balance;
     private final Map<String, String> requests = new HashMap<>();
     private final BankRepository repository;
 
     public Bank(String name, BankRepository repository) {
+        logger.debug("Creating new bank named " + name);
+
         this.name = name;
         this.repository = repository;
 
@@ -35,6 +42,8 @@ public class Bank {
     }
 
     public synchronized String deposit(int amount, String idempotencyKey) {
+        logger.info("Bank '" + name + "': deposit for " + amount + ", key is " + idempotencyKey);
+
         if (amount < 1) {
             throw new IllegalArgumentException("Invalid deposit amount: " + amount);
         }
@@ -49,10 +58,14 @@ public class Bank {
 
         repository.updateBalance(name, balance);
         repository.logTransaction("deposit", amount, txID, idempotencyKey, name);
+
+        logger.debug("Bank '" + name + "': deposit for " + amount + ", key is " + idempotencyKey);
         return txID;
     }
 
     public synchronized String withdraw(int amount, String idempotencyKey) {
+        logger.info("Bank '" + name + "': withdraw for " + amount + ", key is " + idempotencyKey);
+
         if (amount < 1) {
             throw new IllegalArgumentException("Invalid withdrawal amount: " + amount);
         }
