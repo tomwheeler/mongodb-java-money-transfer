@@ -18,7 +18,7 @@ public class BankTest {
 
     @Before
     public void setUp() throws Exception {
-        repo = new BankRepositoryImpl(MongodbConfig.getDatabase("banking", "mongodb://127.0.0.1:27017"));
+        repo = new BankRepositoryImpl(MongodbConfig.getDatabase("bankingdemo", "mongodb://127.0.0.1:27017"));
 
         repo.createAccount(name, initialBalance);
         bank = new Bank(name, repo);
