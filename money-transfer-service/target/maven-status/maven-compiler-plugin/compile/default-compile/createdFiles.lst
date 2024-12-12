@@ -1,9 +1,0 @@
-org/mongodb/ExampleCodeForSignal.class
-org/mongodb/models/TransactionDetails.class
-org/mongodb/workflows/MoneyTransferWorkflow.class
-org/mongodb/exceptions/AccountOperationException.class
-org/mongodb/workflows/MoneyTransferWorkflowImpl.class
-org/mongodb/activities/AccountActivities.class
-org/mongodb/workers/ApplicationWorker.class
-org/mongodb/Starter.class
-org/mongodb/activities/AccountActivitiesImpl.class
