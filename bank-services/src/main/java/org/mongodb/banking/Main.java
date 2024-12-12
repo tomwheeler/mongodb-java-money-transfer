@@ -1,30 +1,47 @@
 package org.mongodb.banking;
 
+
 import com.mongodb.client.MongoDatabase;
+import java.util.Timer;
+import java.util.TimerTask;
 import org.mongodb.banking.config.MongodbConfig;
 import org.mongodb.banking.repository.BankRepositoryImpl;
+import org.mongodb.banking.ui.view.BankUI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Main {
 
-    private static int SERVICE_PORT = 8080;
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+
+    private static final int SERVICE_PORT = 8080;
 
     public static void main(String[] args) {
         try {
-            // Set up MongoDB connection
+            logger.info("Starting application");
+
+            if (System.getenv(MongodbConfig.CONN_STRING_ENV_VARNAME) == null) {
+                logger.error(MongodbConfig.CONN_STRING_ENV_VARNAME + " environment variable is not set!");
+                System.exit(1);
+            }
+
+            logger.debug("Setting up up MongoDB connection");
             MongoDatabase database = MongodbConfig.getDatabase();
             BankRepositoryImpl repository = new BankRepositoryImpl(database);
 
             // Initialize BankManager
+            logger.debug("Initializing BankManager");
             BankManager manager = new BankManager(repository);
 
-            // Start the server
+            logger.debug("Starting the server");
             BankController controller = new BankController(manager, SERVICE_PORT);
             controller.start();
 
-            System.out.printf("Banking service is running at http://localhost:%d\n", SERVICE_PORT);
+            logger.debug("Launching the GUI");
+            BankUI gui = new BankUI("localhost", SERVICE_PORT);
+            gui.display();
         } catch (Exception e) {
-            System.err.println("Failed to start the banking service: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("Error encountered while running the application", e);
         }
     }
 }
