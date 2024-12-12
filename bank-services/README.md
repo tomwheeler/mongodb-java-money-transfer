@@ -48,16 +48,10 @@ mvn exec:java -Dexec.mainClass="org.mongodb.banking.Main"
 ```
 
 This starts the REST API server on `http://localhost:8080`.
+It also launches a GUI that you can use to view the available 
+bank accounts and control whether each of them will accept 
+requests.
 
-### **3. Run the UI**
-
-Run the GUI application:
-
-```bash
-mvn exec:java -Dexec.mainClass="org.mongodb.banking.ui.BankUI"
-```
-
-The GUI will launch, displaying a list of bank accounts and their balances.
 
 ---
 
@@ -187,8 +181,9 @@ curl -X GET "http://localhost:8080/api/withdraw?bankName=DemoBank1&amount=200&id
     
 3. **Simulate Downtime**:
     
-    - Stop a bank in the GUI (`Stop Bank` button).
+    - Stop a bank in the GUI (`Stop` button).
     - Attempt a transaction and observe that it fails due to the bank being offline.
+
 4. **Add and Remove Banks**:
     
     - Add new banks using the `createBank` API.
