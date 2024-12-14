@@ -3,7 +3,7 @@ package org.mongodb.workflows;
 import io.temporal.workflow.SignalMethod;
 import io.temporal.workflow.WorkflowInterface;
 import io.temporal.workflow.WorkflowMethod;
-import org.mongodb.models.TransactionDetails;
+import org.mongodb.models.TransferDetails;
 
 /**
  * Defines the Workflow used for money transfer.
@@ -14,11 +14,11 @@ public interface MoneyTransferWorkflow {
     /**
      * Defines the method invoked when executing the money transfer Workflow.
      *
-     * @param input The TransactionDetails instance that provides input data for the transfer
+     * @param input The TransferDetails instance that specifies input data for the transfer
      * @return a confirmation message containing details of the completed transaction
      */
     @WorkflowMethod
-    String transfer(TransactionDetails input);
+    String transfer(TransferDetails input);
 
     /**
      * Defines the method invoked to approve a large transfer that is blocked as it awaits

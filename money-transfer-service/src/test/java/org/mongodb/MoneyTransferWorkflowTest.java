@@ -17,7 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mongodb.activities.AccountActivities;
 import org.mongodb.activities.AccountActivitiesImpl;
-import org.mongodb.models.TransactionDetails;
+import org.mongodb.models.TransferDetails;
 import org.mongodb.workers.ApplicationWorker;
 import org.mongodb.workflows.MoneyTransferWorkflow;
 import org.mongodb.workflows.MoneyTransferWorkflowImpl;
@@ -47,19 +47,18 @@ public class MoneyTransferWorkflowTest {
         worker.registerActivitiesImplementations(activities);
         testEnv.start();
 
-        TransactionDetails details = new TransactionDetails("alice", "bob", "abc123", 100);
-
+        TransferDetails input = new TransferDetails("alice", "bob", 100, "abc123");
         WorkflowOptions options = WorkflowOptions.newBuilder()
                 .setTaskQueue(ApplicationWorker.TASK_QUEUE_NAME)
-                .setWorkflowId("transfer-workflow-" + details.getReferenceId())
+                .setWorkflowId("transfer-workflow-" + input.getReferenceId())
                 .build();
 
         MoneyTransferWorkflow workflow = workflowClient.newWorkflowStub(MoneyTransferWorkflow.class, options);
 
-        workflow.transfer(details);
+        workflow.transfer(input);
 
-        verify(activities, times(1)).withdraw(details);
-        verify(activities, times(1)).deposit(details);
+        verify(activities, times(1)).withdraw(input.getSender(), input.getAmount(), input.getReferenceId());
+        verify(activities, times(1)).deposit(input.getRecipient(), input.getAmount(), input.getReferenceId());
     }
 
     @Test
@@ -68,11 +67,10 @@ public class MoneyTransferWorkflowTest {
         worker.registerActivitiesImplementations(activities);
         testEnv.start();
 
-        TransactionDetails details = new TransactionDetails("carlos", "diana", "xyz789", 750);
-
+        TransferDetails input = new TransferDetails("carlos", "diana", 750, "xyz789");
         WorkflowOptions options = WorkflowOptions.newBuilder()
                 .setTaskQueue(ApplicationWorker.TASK_QUEUE_NAME)
-                .setWorkflowId("transfer-workflow-" + details.getReferenceId())
+                .setWorkflowId("transfer-workflow-" + input.getReferenceId())
                 .build();
 
         MoneyTransferWorkflow workflow = workflowClient.newWorkflowStub(MoneyTransferWorkflow.class, options);
@@ -80,24 +78,24 @@ public class MoneyTransferWorkflowTest {
         // Since this unit test verifies the human-in-the-loop example in which the
         // transfer awaits manager approval before proceeding, it starts the Workflow
         // Execution asynchronously
-        CompletableFuture<String> result = WorkflowClient.execute(workflow::transfer, details);
+        CompletableFuture<String> result = WorkflowClient.execute(workflow::transfer, input);
 
         // Although the Workflow Execution has started, it is immediately placed on hold, and
         // neither of these Activities should have been called yet.
-        verify(activities, times(0)).withdraw(details);
-        verify(activities, times(0)).deposit(details);
+        verify(activities, times(0)).withdraw(input.getSender(), input.getAmount(), input.getReferenceId());
+        verify(activities, times(0)).deposit(input.getRecipient(), input.getAmount(), input.getReferenceId());
 
         // Calling the Signal method allows the transfer to proceed
         workflow.approve("Maria Manager");
 
         // When the result is available, the Workflow Execution is complete
         String confirmation = result.get();
-        assertTrue(confirmation.contains("Withdrawal TXID"));
-        assertTrue(confirmation.contains("Deposit TXID"));
+        assertTrue(confirmation.contains("withdrawal="));
+        assertTrue(confirmation.contains("deposit="));
 
         // Both the withdrawal and deposit took place
-        verify(activities, times(1)).withdraw(details);
-        verify(activities, times(1)).deposit(details);
+        verify(activities, times(1)).withdraw(input.getSender(), input.getAmount(), input.getReferenceId());
+        verify(activities, times(1)).deposit(input.getRecipient(), input.getAmount(), input.getReferenceId());
     }
 
 }

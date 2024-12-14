@@ -3,7 +3,7 @@ package org.mongodb;
 import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowOptions;
 import io.temporal.serviceclient.WorkflowServiceStubs;
-import org.mongodb.models.TransactionDetails;
+import org.mongodb.models.TransferDetails;
 import org.mongodb.workers.ApplicationWorker;
 import org.mongodb.workflows.MoneyTransferWorkflow;
 import org.slf4j.Logger;
@@ -19,7 +19,7 @@ import java.util.UUID;
  * created at the top of the main method. This is later passed as an input parameter
  * to the Workflow method.
  *
- * Although that call may <i>appear</i> to executes the Workflow method, it's actually
+ * Although that call may <i>appear</i> to execute the Workflow method, it's actually
  * submitting a Workflow Execution request to the Temporal Service. When the Temporal
  * Service receives that request, it queues a Task that specifies the input data and
  * type of Workflow to execute. The Worker, which is polling this same Task Queue,
@@ -65,7 +65,7 @@ public class Starter {
 
         String idempotencyKey = UUID.randomUUID().toString();
 
-        TransactionDetails details = new TransactionDetails(sender, recipient, idempotencyKey, transferAmount);
+        TransferDetails details = new TransferDetails(sender, recipient, transferAmount, idempotencyKey);
         logger.info("Will transfer {} from {} to {}", transferAmount, sender, recipient);
 
         String workflowId = String.format("transfer-%d-%s-to-%s", transferAmount, sender, recipient);

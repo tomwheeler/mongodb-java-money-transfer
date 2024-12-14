@@ -34,7 +34,6 @@ public class ApplicationWorker {
         WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newLocalServiceStubs();
         WorkflowClient client = WorkflowClient.newInstance(serviceStub);
         WorkerFactory factory = WorkerFactory.newInstance(client);
-
         Worker worker = factory.newWorker(TASK_QUEUE_NAME);
 
         worker.registerWorkflowImplementationTypes(MoneyTransferWorkflowImpl.class);

@@ -3,14 +3,13 @@ package org.mongodb.workflows;
 import io.temporal.activity.ActivityOptions;
 import io.temporal.workflow.Workflow;
 import org.mongodb.activities.AccountActivities;
-import org.mongodb.models.TransactionDetails;
+import org.mongodb.models.TransferDetails;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 
 /**
- * Implementation of the money transfer Workflow.
+ * Implements the money transfer Workflow.
  */
 public class MoneyTransferWorkflowImpl implements MoneyTransferWorkflow {
 
@@ -26,12 +25,12 @@ public class MoneyTransferWorkflowImpl implements MoneyTransferWorkflow {
     private boolean hasManagerApproval = true;
 
     @Override
-    public String transfer(TransactionDetails input) {
+    public String transfer(TransferDetails input) {
         logger.info("Starting Money Transfer Workflow");
 
         // Large transfers must be explicitly approved by a manager
         if (input.getAmount() > 500) {
-            logger.info("This transfer is on hold awaiting manager approval");
+            logger.warn("This transfer is on hold awaiting manager approval");
             hasManagerApproval = false;
         }
 
@@ -40,27 +39,26 @@ public class MoneyTransferWorkflowImpl implements MoneyTransferWorkflow {
         // is invoked and sets hasManagerApproval to true, causing the Workflow to proceed.
         Workflow.await(() -> hasManagerApproval);
 
-        // TODO - consider refactoring to have a different input parameter for the Activities
-        // (e.g., AccountOperationDetails) that only lists the relevant account and then
-        // rename TransactionDetails to MoneyTransferDetails
-        String wdConf = activitiesStub.withdraw(input);
+        // withdraw money from the sender's account (this returns a transaction ID).
+        String withdrawResult = activitiesStub.withdraw(input.getSender(), input.getAmount(), input.getReferenceId());
 
-        // NOTE: Uncomment the next statement to pause 20 seconds between the withdraw and deposit Activities.
-        //       This will give you time to kill the Worker, thus terminating the process in which the
-        //       money transfer workflow code is executing. You can then restart the Worker, after which
-        //       you will see "durable execution" in action by observing that the Workflow resumes and then
-        //       runs to completion (i.e., it does not repeat the withdraw operation, which already completed;
-        //       it completes the deposit operation, which had not already run).
-        // Workflow.sleep(20000);
+        // NOTE: You can uncomment the next statement and restart the Worker to add a 30-second delay
+        //       between the withdraw and deposit in all new transfers. That delay will provide you
+        //       with time to kill the Worker, thereby simulating an application crash. When you
+        //       start the Worker again afterwards, you will see "durable execution" in action by
+        //       observing that the Workflow resumes from where the crash occurred and then runs to
+        //       completion. That is, it will not repeat the withdrawal, which already completed, but
+        //       instead starts the deposit, which had not yet run).
+        //Workflow.sleep(Duration.ofSeconds(30));
 
-        String depConf = activitiesStub.deposit(input);
+        // deposit money into the recipient's account (this also returns a transaction ID)
+        String depositResult = activitiesStub.deposit(input.getRecipient(), input.getAmount(), input.getReferenceId());
 
-        String confirmation = String.format("Withdrawal TXID: %s, Deposit TXID: %s", wdConf, depConf);
+        String confirmation = String.format("withdrawal=%s, deposit=%s", withdrawResult, depositResult);
 
         logger.info("Money Transfer Workflow now complete. Confirmation: {}", confirmation);
         return confirmation;
     }
-
 
     @Override
     public void approve(String managerName) {
