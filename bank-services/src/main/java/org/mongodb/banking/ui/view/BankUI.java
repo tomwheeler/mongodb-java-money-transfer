@@ -38,9 +38,11 @@ public class BankUI {
         frame.setLocationRelativeTo(null);
         
         Image temporalLogo = Icons.getTemporalLogo();
-        Taskbar taskbar = Taskbar.getTaskbar();
-        taskbar.setIconImage(temporalLogo); // for Dock on macOS
         frame.setIconImage(temporalLogo);   // for title bar (in other desktop environments)
+        if (Taskbar.isTaskbarSupported()) {
+            Taskbar taskbar = Taskbar.getTaskbar();
+            taskbar.setIconImage(temporalLogo); // for Dock on macOS
+        }
 
         final JPanel mainPanel = new JPanel();
         mainPanelHolder[0] = mainPanel;
@@ -179,9 +181,13 @@ public class BankUI {
         if (controller.getModel().getBankNames().isEmpty()) {
             placeholderPanel = new JPanel();
             JLabel warningLabel = new JLabel();
-            String msg = "There are currently no accounts available. Click the button above (on the left) to add them.";
-            warningLabel.setText(msg);
-            warningLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+            StringBuilder sb = new StringBuilder();
+            sb.append("<html><body><center>");
+            sb.append("There are currently no accounts available.");
+            sb.append("<br>Click the button above (on the left) to add them.");
+            sb.append("</center><br></body></html>");
+            warningLabel.setText(sb.toString());
+            warningLabel.setFont(new Font("Arial", Font.PLAIN, 18));
             placeholderPanel.add(warningLabel);
             
             mainPanelHolder[0].add(placeholderPanel);
