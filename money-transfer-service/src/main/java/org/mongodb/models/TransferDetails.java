@@ -7,17 +7,17 @@ import java.util.Objects;
  * recipient, and amount of the transfer, as well as a reference ID that uniquely
  * identifies this transfer.
  */
-public class MoneyTransferInput {
+public class TransferDetails {
 
     private String sender;
     private String recipient;
     private String referenceId;
     private int amount;
 
-    public MoneyTransferInput() {
+    public TransferDetails() {
     }
 
-    public MoneyTransferInput(String sender, String recipient, int amount, String referenceId) {
+    public TransferDetails(String sender, String recipient, int amount, String referenceId) {
         this.sender = sender;
         this.recipient = recipient;
         this.amount = amount;
@@ -44,7 +44,7 @@ public class MoneyTransferInput {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MoneyTransferInput that = (MoneyTransferInput) o;
+        TransferDetails that = (TransferDetails) o;
         return amount == that.amount && Objects.equals(sender, that.sender) && Objects.equals(recipient, that.recipient) && Objects.equals(referenceId, that.referenceId);
     }
 
@@ -57,7 +57,7 @@ public class MoneyTransferInput {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("MoneyTransferInput {");
+        sb.append("TransferDetails {");
         sb.append(String.format("sender='%s', ", sender));
         sb.append(String.format("recipient='%s', ", recipient));
         sb.append(String.format("amount='%d', ", amount));
