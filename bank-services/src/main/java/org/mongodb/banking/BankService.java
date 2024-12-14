@@ -66,7 +66,7 @@ public class BankService {
     }
 
     public int getBalance(String bankName) {
-        logger.info("Getting balance for bank '" + bankName + "'");
+        logger.debug("Getting balance for bank '" + bankName + "'");
 
         ensureAvailability(bankName);
         Document account = repository.findAccountByBankName(bankName);
