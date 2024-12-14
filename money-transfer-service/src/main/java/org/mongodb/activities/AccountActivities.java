@@ -2,7 +2,6 @@ package org.mongodb.activities;
 
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
-import org.mongodb.models.TransactionDetails;
 
 /**
  * Declares the operations that are used to carry out the money transfer.
@@ -24,29 +23,26 @@ public interface AccountActivities {
 
     /**
      * Contacts the appropriate banking service and withdraws a specified
-     * amount of money from the source account.
+     * amount of money from the sender's account.
      *
-     * @param input The TransactionDetails object that contains details about
-     *              the source account and amount of money to withdraw.
+     * @param account identifies the account to be debited
+     * @param amount the amount to debit that account
+     * @param referenceId a caller-specified identifier for this request
      * @return A string containing the transaction ID for this operation
      */
     @ActivityMethod
-    String withdraw(TransactionDetails input);
+    String withdraw(String account, int amount, String referenceId);
 
     /**
      * Contacts the appropriate banking service and deposits a specified
-     * amount of money into the target account.
+     * amount of money into the recipient's account.
      *
-     * @param input The TransactionDetails object that contains details about
-     *              the target account and amount of money to deposit.
+     * @param account identifies the account to be credited
+     * @param amount the amount to credit to that account
+     * @param referenceId a caller-specified identifier for this request
      * @return A string containing the transaction ID for this operation
      */
     @ActivityMethod
-    String deposit(TransactionDetails input) ;
-
-    // NOTE: For the sake of simplicity, this example does not cover
-    // Saga/compensation, but we could mention it in the tutorial and point
-    // to the Javadoc here:
-    // https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Saga.html
+    String deposit(String account, int amount, String referenceId) ;
 
 }

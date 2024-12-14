@@ -3,7 +3,6 @@ package org.mongodb.activities;
 import io.temporal.activity.Activity;
 
 import org.mongodb.bankapi.BankingApiClient;
-import org.mongodb.models.TransactionDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +15,7 @@ import org.slf4j.LoggerFactory;
 public class AccountActivitiesImpl implements AccountActivities {
     private static final Logger logger = LoggerFactory.getLogger(AccountActivitiesImpl.class);
 
-    // used to make HTTP requests to the banking service. It does not use Temporal APIs.
+    // used to interact with the banking service (does not use Temporal APIs).
     private final BankingApiClient client;
 
     public AccountActivitiesImpl() {
@@ -24,30 +23,30 @@ public class AccountActivitiesImpl implements AccountActivities {
     }
 
     @Override
-    public String withdraw(TransactionDetails input) {
+    public String withdraw(String account, int amount, String referenceId) {
         logger.info("Starting withdraw operation");
 
-        String transactionId = null;
+        String transactionId;
         try {
-            transactionId = client.withdraw(input.getSender(), input.getAmount(), input.getReferenceId());
+            transactionId = client.withdraw(account, amount, referenceId);
         } catch (Exception e) {
             logger.error("Withdraw operation failed", e);
             throw Activity.wrap(e);
         }
 
-        logger.info("Withdrawal operation complete. Transaction ID is {}", transactionId);
+        logger.info("Withdraw operation complete. Transaction ID is {}", transactionId);
         return transactionId;
     }
 
     @Override
-    public String deposit(TransactionDetails input) {
+    public String deposit(String account, int amount, String referenceId) {
         logger.info("Starting deposit operation");
 
-        String transactionId = null;
+        String transactionId;
         try {
-            transactionId = client.deposit(input.getRecipient(), input.getAmount(), input.getReferenceId());
+            transactionId = client.deposit(account, amount, referenceId);
         } catch (Exception e) {
-            logger.error("Withdraw operation failed", e);
+            logger.error("Deposit operation failed", e);
             throw Activity.wrap(e);
         }
 
