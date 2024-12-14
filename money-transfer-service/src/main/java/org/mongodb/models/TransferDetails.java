@@ -2,21 +2,26 @@ package org.mongodb.models;
 
 import java.util.Objects;
 
-public class TransactionDetails {
+/**
+ * This class holds input data for a money transfer. It identifies the sender,
+ * recipient, and amount of the transfer, as well as a reference ID that uniquely
+ * identifies this transfer.
+ */
+public class MoneyTransferInput {
 
     private String sender;
     private String recipient;
     private String referenceId;
     private int amount;
 
-    public TransactionDetails() {
+    public MoneyTransferInput() {
     }
 
-    public TransactionDetails(String sender, String recipient, String referenceId, int amount) {
+    public MoneyTransferInput(String sender, String recipient, int amount, String referenceId) {
         this.sender = sender;
         this.recipient = recipient;
-        this.referenceId = referenceId;
         this.amount = amount;
+        this.referenceId = referenceId;
     }
 
     public String getSender() {
@@ -27,19 +32,19 @@ public class TransactionDetails {
         return recipient;
     }
 
-    public String getReferenceId() {
-        return referenceId;
-    }
-
     public int getAmount() {
         return amount;
+    }
+
+    public String getReferenceId() {
+        return referenceId;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TransactionDetails that = (TransactionDetails) o;
+        MoneyTransferInput that = (MoneyTransferInput) o;
         return amount == that.amount && Objects.equals(sender, that.sender) && Objects.equals(recipient, that.recipient) && Objects.equals(referenceId, that.referenceId);
     }
 
@@ -52,11 +57,11 @@ public class TransactionDetails {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("TransactionDetails {");
+        sb.append("MoneyTransferInput {");
         sb.append(String.format("sender='%s', ", sender));
         sb.append(String.format("recipient='%s', ", recipient));
-        sb.append(String.format("referenceId='%s', ", referenceId));
-        sb.append(String.format("amount='%d'}", amount));
+        sb.append(String.format("amount='%d', ", amount));
+        sb.append(String.format("referenceId='%s'}", referenceId));
 
         return sb.toString();
     }
