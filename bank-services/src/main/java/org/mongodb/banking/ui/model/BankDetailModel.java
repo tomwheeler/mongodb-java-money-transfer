@@ -7,6 +7,9 @@ public class BankDetailModel {
     
     public static final String PROP_NAME_AVAILABLE = "bankName";
     public static final String PROP_NAME_BALANCE = "balance";
+
+    // flag used to indicate that the actual current balance is unknown
+    public static final int FLAG_BALANCE_UNKNOWN = Integer.MIN_VALUE;
     
     private final PropertyChangeSupport pcs;
 
@@ -66,7 +69,12 @@ public class BankDetailModel {
 
         builder.append("BankDetailModel {");
         builder.append("bankName=").append(bankName);
-        builder.append(", balance=").append(balance);
+        builder.append(", balance=");
+        if (balance == FLAG_BALANCE_UNKNOWN) {
+            builder.append("UNKNOWN");
+        } else {
+            builder.append(balance);
+        }
         builder.append(", available=").append(available);
         builder.append(" }");
 

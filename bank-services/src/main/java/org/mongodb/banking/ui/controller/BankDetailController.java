@@ -31,6 +31,7 @@ public class BankDetailController {
                 } else {
                     bankClient.stopBank(name);
                 }
+                refresh();
             }
         });
     }
@@ -38,15 +39,23 @@ public class BankDetailController {
     void refresh() {
         logger.trace("BankDetailController is refreshing model for {}", name);
 
-        int newBalance = client.getBalance(name);
+        boolean newAvailable = client.isAvailable(name);
+        int newBalance = getNewBalance(newAvailable);
+
         if (model.getBalance() != newBalance) {
             model.setBalance(newBalance);
         }
 
-        boolean newAvailable = client.isAvailable(name);
         if (model.isAvailable() != newAvailable) {
             model.setAvailable(newAvailable);
         }
+    }
+
+    private int getNewBalance(boolean isAvailable) {
+        if (isAvailable) {
+            return client.getBalance(name);
+        }
+        return BankDetailModel.FLAG_BALANCE_UNKNOWN;
     }
 
     public BankDetailModel getModel() {

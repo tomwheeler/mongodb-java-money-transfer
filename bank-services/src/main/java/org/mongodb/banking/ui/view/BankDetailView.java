@@ -25,6 +25,9 @@ public class BankDetailView extends JPanel {
     
     private static final Font TITLE_PANEL_FONT = new Font("Arial", Font.PLAIN, 20);
     private static final Font UI_ELEMENT_FONT = new Font("Arial", Font.PLAIN, 18);
+
+    // shown for the current balance when the account is unavailable
+    private static final String BALANCE_UNKNOWN_TEXT = "UNKNOWN";
     
     private final BankDetailModel model;
     
@@ -113,8 +116,8 @@ public class BankDetailView extends JPanel {
      */
     private void refresh() {
         SwingUtilities.invokeLater(() -> {
-            if (model.getBalance() == -1) {
-                balanceValueLabel.setText("UNKNOWN");
+            if (model.getBalance() == BankDetailModel.FLAG_BALANCE_UNKNOWN) {
+                balanceValueLabel.setText(BALANCE_UNKNOWN_TEXT);
             } else {
                 // show the amount using the user's currency symbol
                 Locale locale = Locale.getDefault();
