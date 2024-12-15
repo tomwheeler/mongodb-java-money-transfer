@@ -24,7 +24,7 @@ public class AccountActivitiesImpl implements AccountActivities {
 
     @Override
     public String withdraw(String account, int amount, String referenceId) {
-        logger.info("Starting withdraw operation");
+        logger.debug("Starting withdraw operation");
 
         String transactionId;
         try {
@@ -40,7 +40,7 @@ public class AccountActivitiesImpl implements AccountActivities {
 
     @Override
     public String deposit(String account, int amount, String referenceId) {
-        logger.info("Starting deposit operation");
+        logger.debug("Starting deposit operation");
 
         String transactionId;
         try {
