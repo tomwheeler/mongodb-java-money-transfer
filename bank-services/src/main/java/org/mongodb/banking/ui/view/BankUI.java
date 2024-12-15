@@ -1,14 +1,15 @@
 package org.mongodb.banking.ui.view;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import org.mongodb.banking.client.BankingApiClient;
+import org.mongodb.banking.ui.controller.BankListController;
+import org.mongodb.banking.ui.model.BankDetailModel;
+import org.mongodb.banking.ui.model.BankListModel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
-import org.mongodb.banking.client.BankingApiClient;
-import org.mongodb.banking.ui.model.BankDetailModel;
-import org.mongodb.banking.ui.controller.BankListController;
-import org.mongodb.banking.ui.model.BankListModel;
 
 public class BankUI {
     
@@ -40,8 +41,13 @@ public class BankUI {
         Image temporalLogo = Icons.getTemporalLogo();
         frame.setIconImage(temporalLogo);   // for title bar (in other desktop environments)
         if (Taskbar.isTaskbarSupported()) {
+            // Ignore failure to set the icon image, as this is only cosmetic
+            // Support for this feature varies by OS and JDK.
             Taskbar taskbar = Taskbar.getTaskbar();
-            taskbar.setIconImage(temporalLogo); // for Dock on macOS
+            try {
+                taskbar.setIconImage(temporalLogo); // for Dock on macOS
+            } catch (UnsupportedOperationException e) {
+            }
         }
 
         final JPanel mainPanel = new JPanel();
