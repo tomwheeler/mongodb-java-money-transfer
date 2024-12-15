@@ -25,7 +25,6 @@ public class MoneyTransferWorkflowImpl implements MoneyTransferWorkflow {
                     .setMaximumInterval(Duration.ofSeconds(60))
                     .setBackoffCoefficient(2.0)
                     .setDoNotRetry(
-                            NoSuchAccountException.class.getName(),      // comment out to retry these
                             InsufficientFundsException.class.getName())  // comment out to retry these
                     .build())
             .build();
@@ -51,18 +50,20 @@ public class MoneyTransferWorkflowImpl implements MoneyTransferWorkflow {
         Workflow.await(() -> hasManagerApproval);
 
         // withdraw money from the sender's account (this returns a transaction ID).
+        logger.info("Starting withdraw operation");
         String withdrawResult = activitiesStub.withdraw(input.getSender(), input.getAmount(), input.getReferenceId());
 
         // NOTE: You can uncomment the next statement and restart the Worker to add a 30-second delay
-        //       between the withdraw and deposit in all new transfers. That delay will provide you
+        //       between the withdraw and deposit in future transfers. That delay will provide you
         //       with time to kill the Worker, thereby simulating an application crash. When you
-        //       start the Worker again afterwards, you will see "durable execution" in action by
+        //       start the Worker again afterward, you will see "durable execution" in action by
         //       observing that the Workflow resumes from where the crash occurred and then runs to
         //       completion. That is, it will not repeat the withdrawal, which already completed, but
         //       instead starts the deposit, which had not yet run).
         //Workflow.sleep(Duration.ofSeconds(30));
 
         // deposit money into the recipient's account (this also returns a transaction ID)
+        logger.info("Starting deposit operation");
         String depositResult = activitiesStub.deposit(input.getRecipient(), input.getAmount(), input.getReferenceId());
 
         String confirmation = String.format("withdrawal=%s, deposit=%s", withdrawResult, depositResult);
