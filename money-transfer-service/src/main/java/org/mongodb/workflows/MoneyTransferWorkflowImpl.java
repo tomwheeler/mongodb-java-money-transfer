@@ -1,8 +1,11 @@
 package org.mongodb.workflows;
 
 import io.temporal.activity.ActivityOptions;
+import io.temporal.common.RetryOptions;
 import io.temporal.workflow.Workflow;
 import org.mongodb.activities.AccountActivities;
+import org.mongodb.exceptions.InsufficientFundsException;
+import org.mongodb.exceptions.NoSuchAccountException;
 import org.mongodb.models.TransferDetails;
 import org.slf4j.Logger;
 
@@ -17,6 +20,14 @@ public class MoneyTransferWorkflowImpl implements MoneyTransferWorkflow {
 
     private final ActivityOptions options = ActivityOptions.newBuilder()
             .setStartToCloseTimeout(Duration.ofSeconds(10))
+            .setRetryOptions(RetryOptions.newBuilder()
+                    .setInitialInterval(Duration.ofSeconds(1))
+                    .setMaximumInterval(Duration.ofSeconds(60))
+                    .setBackoffCoefficient(2.0)
+                    .setDoNotRetry(
+                            NoSuchAccountException.class.getName(),      // comment out to retry these
+                            InsufficientFundsException.class.getName())  // comment out to retry these
+                    .build())
             .build();
 
     private final AccountActivities activitiesStub = Workflow.newActivityStub(AccountActivities.class, options);
