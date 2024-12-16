@@ -41,7 +41,7 @@ public class ApplicationWorker {
         AccountActivities activities = new AccountActivitiesImpl();
         worker.registerActivitiesImplementations(activities);
 
-        logger.info("Worker started. Awaiting tasks on queue: ", TASK_QUEUE_NAME);
+        logger.info("Worker started. Awaiting tasks on queue {}", TASK_QUEUE_NAME);
         factory.start();
     }
 }
