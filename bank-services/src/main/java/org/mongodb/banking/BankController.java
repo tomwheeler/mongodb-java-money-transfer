@@ -24,12 +24,14 @@ public class BankController {
     private final Javalin server;
 
     public BankController(BankManager manager, int port) throws IOException {
-        logger.info("Creating new BankController instance, with port=" + port);
+        logger.info("Creating new BankController instance, with port={}", port);
 
         this.manager = manager;
         this.port = port;
-        
-        server = Javalin.create();
+
+        server = Javalin.create(config -> {
+            config.showJavalinBanner = false;
+        });
         server.get("/api/balance", new GetBalanceHandler());
         server.get("/api/createBank", new CreateBankHandler());
         server.get("/api/deleteBank", new DeleteBankHandler());
@@ -41,7 +43,7 @@ public class BankController {
     }
     
     public void start() {
-        logger.info("Starting BankController on port " + port);
+        logger.info("Starting BankController on port {}", port);
         server.start("localhost", port);
     }
 
