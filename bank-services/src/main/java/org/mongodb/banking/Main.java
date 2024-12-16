@@ -37,6 +37,14 @@ public class Main {
             BankController controller = new BankController(manager, SERVICE_PORT);
             controller.start();
 
+            if (args.length > 0) {
+                for (int i = 0; i < args.length; i++) {
+                    String arg = args[i];
+                    if ("--no-gui".equals(args[i])) {
+                        return;
+                    }
+                }
+            }
             logger.debug("Launching the GUI");
             BankUI gui = new BankUI("localhost", SERVICE_PORT);
             gui.display();
