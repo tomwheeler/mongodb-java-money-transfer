@@ -97,11 +97,7 @@ public class BankDetailView extends JPanel {
         
         bankStatusButton.addActionListener((ActionEvent evt) -> {
             new Thread(() -> {
-                if (model.isAvailable()) {
-                    model.setAvailable(false);
-                } else {
-                    model.setAvailable(true);
-                }
+                model.setAvailable(!model.isAvailable());
                 SwingUtilities.invokeLater(() -> {
                     refresh();
                 });
