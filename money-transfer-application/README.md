@@ -4,9 +4,9 @@
 
 1. Start the banking services (and the GUI showing the status and account 
    balances), as described in the README for the other project.
-2. Run the `main` method in the `org.mongodb.workers.Worker` class:
+2. Run the `main` method in the `org.mongodb.workers.ApplicationWorker` class:
    ```
-   mvn compile exec:java -Dexec.mainClass="org.mongodb.workers.Worker"
+   mvn compile exec:java -Dexec.mainClass="org.mongodb.workers.ApplicationWorker"
    ```
 3. Run the `main` method in the `org.mongodb.Starter` class to start the :
    Workflow, specifying the sender, recipient, and amount in arguments to
