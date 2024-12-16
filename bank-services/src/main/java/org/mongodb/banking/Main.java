@@ -2,8 +2,6 @@ package org.mongodb.banking;
 
 
 import com.mongodb.client.MongoDatabase;
-import java.util.Timer;
-import java.util.TimerTask;
 import org.mongodb.banking.config.MongodbConfig;
 import org.mongodb.banking.repository.BankRepositoryImpl;
 import org.mongodb.banking.ui.view.BankUI;
@@ -37,9 +35,8 @@ public class Main {
             controller.start();
 
             if (args.length > 0) {
-                for (int i = 0; i < args.length; i++) {
-                    String arg = args[i];
-                    if ("--no-gui".equals(args[i])) {
+                for (String arg : args) {
+                    if ("--no-gui".equals(arg)) {
                         return;
                     }
                 }
