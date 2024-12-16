@@ -43,23 +43,22 @@ public class Starter {
         }
 
         String sender = args[0];
-        if (sender == null || sender.trim().length() < 1) {
+        if (sender == null || sender.trim().isEmpty()) {
             System.err.println("Sender name must not be empty");
             System.exit(1);
         }
 
         String recipient = args[1];
-        if (recipient == null || recipient.trim().length() < 1) {
+        if (recipient == null || recipient.trim().isEmpty()) {
             System.err.println("Recipient name must not be empty");
             System.exit(1);
         }
 
         int transferAmount = -1;
         try {
-            transferAmount = Integer.valueOf(args[2]);
+            transferAmount = Integer.parseInt(args[2]);
         } catch (NumberFormatException nfe) {
-            System.err.println("Could not parse specified amount: " + args[0]);
-            System.err.println(nfe);
+            logger.error("Could not parse specified amount {}", args[0], nfe);
             System.exit(1);
         }
 
@@ -80,7 +79,7 @@ public class Starter {
         MoneyTransferWorkflow workflow = client.newWorkflowStub(MoneyTransferWorkflow.class, options);
         String confirmation = workflow.transfer(details);
 
-        logger.info("Money Transfer complete. Confirmation: " + confirmation);
+        logger.info("Money Transfer complete. Confirmation: {}", confirmation);
 
         System.exit(0);
     }
