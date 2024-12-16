@@ -1,11 +1,11 @@
 # macOS junk
 .DS_Store
 
-
 # Compiled class file
 *.class
 
-/target
+# build artifacts and generated reports
+target/
 
 # Log file
 *.log

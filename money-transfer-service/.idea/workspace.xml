@@ -5,20 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="041ddcb5-8ad6-466a-b4e1-43898404d501" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/bank-services/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/src/main/java/com/mongodb/banking/Bank.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/src/main/java/com/mongodb/banking/BankClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/src/main/java/com/mongodb/banking/BankController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/src/main/java/com/mongodb/banking/BankService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/src/main/java/com/mongodb/banking/JsonUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/src/main/java/com/mongodb/banking/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bank-services/src/main/java/com/mongodb/banking/exceptions/InsufficientFundsException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +14,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -51,9 +39,9 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;refactor&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/tim.kelly/Documents/JavaProjects/mongodb-java-money-transfer&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/tim.kelly/Documents/JavaProjects/mongodb-java-money-transfer/money-transfer-service&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -83,6 +71,8 @@
       <workItem from="1732189944042" duration="21000" />
       <workItem from="1732201870660" duration="158000" />
       <workItem from="1732705138944" duration="200000" />
+      <workItem from="1732710201029" duration="191000" />
+      <workItem from="1733153555506" duration="2000" />
     </task>
     <servers />
   </component>
