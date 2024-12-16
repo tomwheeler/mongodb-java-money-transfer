@@ -34,11 +34,9 @@ public class Main {
             BankController controller = new BankController(manager, SERVICE_PORT);
             controller.start();
 
-            if (args.length > 0) {
-                for (String arg : args) {
-                    if ("--no-gui".equals(arg)) {
-                        return;
-                    }
+            for (String arg : args) {
+                if ("--no-gui".equals(arg)) {
+                    return;
                 }
             }
             logger.debug("Launching the GUI");
