@@ -76,9 +76,6 @@ public class BankListController {
 
         logger.trace("BankListController found {} new items to add", namesToAdd.size());
         for (String name : namesToAdd) {
-            int balance = bankClient.getBalance(name);
-            boolean available = bankClient.isAvailable(name);
-
             BankDetailController detailController = new BankDetailController(name, bankClient);
             detailControllers.put(name, detailController);
             model.addBankName(name);
@@ -106,7 +103,7 @@ public class BankListController {
     }
 
     public void approvePendingTransfer(String workflowId, String managerName) {
-        if (workflowId == null || workflowId.length() == 0
+        if (workflowId == null || workflowId.isEmpty()
                 || managerName == null || managerName.length() == 0) {
             return;
         }
