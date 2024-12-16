@@ -5,7 +5,6 @@ import org.mongodb.banking.repository.BankRepository;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.slf4j.Logger;
@@ -25,12 +24,12 @@ public class BankService {
     }
 
     public void stopBank(String bankName) {
-        logger.info("Stopping bank " + bankName);
+        logger.info("Stopping bank {}", bankName);
         unavailableBanks.add(bankName);
     }
 
     public void startBank(String bankName) {
-        logger.info("Starting bank " + bankName);
+        logger.info("Starting bank {}", bankName);
         unavailableBanks.remove(bankName);
     }
 
@@ -40,13 +39,13 @@ public class BankService {
 
     private void ensureAvailability(String bankName) {
         if (!isAvailable(bankName)) {
-            logger.warn("Operation attempted on '" + bankName + "', but it is unavailable");
+            logger.warn("Operation attempted on '{}', but it is unavailable", bankName);
             throw new IllegalStateException("Bank '" + bankName + "' is currently unavailable.");
         }
     }
 
     public void createBank(String bankName, int initialBalance) {
-        logger.info("Attempting to create bank '" + bankName + "' with balance: " + initialBalance);
+        logger.info("Attempting to create bank '{}' with balance: {}", bankName, initialBalance);
 
         Document account = repository.findAccountByBankName(bankName);
         if (account != null) {
@@ -56,7 +55,7 @@ public class BankService {
     }
 
     public boolean deleteBank(String bankName) {
-        logger.info("Attempting to delete bank '" + bankName + "'");
+        logger.info("Attempting to delete bank '{}'", bankName);
 
         Document account = repository.findAccountByBankName(bankName);
         if (account != null) {
@@ -66,7 +65,7 @@ public class BankService {
     }
 
     public int getBalance(String bankName) {
-        logger.debug("Getting balance for bank '" + bankName + "'");
+        logger.debug("Getting balance for bank '{}'", bankName);
 
         ensureAvailability(bankName);
         Document account = repository.findAccountByBankName(bankName);
@@ -77,25 +76,18 @@ public class BankService {
     }
 
     public String deposit(String bankName, int amount, String idempotencyKey) {
-        logger.info("Attempting deposit to bank '" + bankName + "' for " + amount);
+        logger.info("Attempting deposit to bank '{}' for {}", bankName, amount);
         ensureAvailability(bankName);
         Bank bank = getBank(bankName);
         return bank.deposit(amount, idempotencyKey);
     }
 
     public String withdraw(String bankName, int amount, String idempotencyKey) {
-        logger.info("Attempting withdraw from bank '" + bankName + "' for " + amount);
+        logger.info("Attempting withdraw from bank '{}' for {}", bankName, amount);
 
         ensureAvailability(bankName);
         Bank bank = getBank(bankName);
         return bank.withdraw(amount, idempotencyKey);
-    }
-
-    /**
-     * Fetches all bank names from the repository.
-     */
-    public List<String> getAllBankNames() {
-        return repository.getAllBankNames();
     }
 
     private Bank getBank(String bankName) {
