@@ -19,7 +19,7 @@ public class Bank {
     private final BankRepository repository;
 
     public Bank(String name, BankRepository repository) {
-        logger.debug("Creating new bank named " + name);
+        logger.debug("Creating new bank named {}", name);
 
         this.name = name;
         this.repository = repository;
@@ -42,7 +42,7 @@ public class Bank {
     }
 
     public synchronized String deposit(int amount, String idempotencyKey) {
-        logger.info("Bank '" + name + "': deposit for " + amount + ", key is " + idempotencyKey);
+        logger.info("Bank '{}': deposit for {}, key is {}", name, amount, idempotencyKey);
 
         if (amount < 1) {
             throw new IllegalArgumentException("Invalid deposit amount: " + amount);
@@ -59,12 +59,12 @@ public class Bank {
         repository.updateBalance(name, balance);
         repository.logTransaction("deposit", amount, txID, idempotencyKey, name);
 
-        logger.debug("Bank '" + name + "': deposit for " + amount + ", key is " + idempotencyKey);
+        logger.debug("Bank '{}': deposit for {}, key is {}", name, amount, idempotencyKey);
         return txID;
     }
 
     public synchronized String withdraw(int amount, String idempotencyKey) {
-        logger.info("Bank '" + name + "': withdraw for " + amount + ", key is " + idempotencyKey);
+        logger.info("Bank '{}': withdraw for {}, key is {}", name, amount, idempotencyKey);
 
         if (amount < 1) {
             throw new IllegalArgumentException("Invalid withdrawal amount: " + amount);
