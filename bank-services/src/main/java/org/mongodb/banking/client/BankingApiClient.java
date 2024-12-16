@@ -86,7 +86,7 @@ public class BankingApiClient {
                 throw new IOException("Service call unsuccessful, message is: " + message);
             }
         } catch (IOException ex) {
-            logger.error("Failed to retrieve balance for " + bankName, ex);
+            logger.error("Failed to retrieve balance for {}", bankName, ex);
         }
     }
     
@@ -113,7 +113,7 @@ public class BankingApiClient {
             JsonNode balanceNode = bodyNode.get("balance");
             balance = balanceNode.asInt();
         } catch (IOException ex) {
-            logger.error("Failed to retrieve balance for " + bankName, ex);
+            logger.error("Failed to retrieve balance for {}", bankName, ex);
         }
         
         return balance;
@@ -143,7 +143,7 @@ public class BankingApiClient {
             JsonNode availableNode = bodyNode.get("available");
             available = availableNode.asBoolean();
         } catch (IOException ex) {
-            logger.error("Failed to retrieve availability status for " + bankName, ex);
+            logger.error("Failed to retrieve availability status for {}", bankName, ex);
         }
         
         return available;
@@ -180,7 +180,7 @@ public class BankingApiClient {
                 throw new IOException("Service returned status code: " + statusNode.asText());
             }
         } catch (IOException ex) {
-            logger.error("Failed to change availability status for " + bankName, ex);
+            logger.error("Failed to change availability status for {}", bankName, ex);
         }
     }
     
