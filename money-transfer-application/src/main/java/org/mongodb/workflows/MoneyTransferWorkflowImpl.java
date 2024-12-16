@@ -51,7 +51,8 @@ public class MoneyTransferWorkflowImpl implements MoneyTransferWorkflow {
 
         // withdraw money from the sender's account (this returns a transaction ID).
         logger.info("Starting withdraw operation");
-        String withdrawResult = activitiesStub.withdraw(input.getSender(), input.getAmount(), input.getReferenceId());
+        String withdrawKey = String.format("withdrawal-for-%s", input.getReferenceId());
+        String withdrawResult = activitiesStub.withdraw(input.getSender(), input.getAmount(), withdrawKey);
 
         // NOTE: You can uncomment the next statement and restart the Worker to add a 30-second delay
         //       between the withdraw and deposit in future transfers. That delay will provide you
@@ -64,7 +65,8 @@ public class MoneyTransferWorkflowImpl implements MoneyTransferWorkflow {
 
         // deposit money into the recipient's account (this also returns a transaction ID)
         logger.info("Starting deposit operation");
-        String depositResult = activitiesStub.deposit(input.getRecipient(), input.getAmount(), input.getReferenceId());
+        String depositKey = String.format("deposit-for-%s", input.getReferenceId());
+        String depositResult = activitiesStub.deposit(input.getRecipient(), input.getAmount(), depositKey);
 
         String confirmation = String.format("withdrawal=%s, deposit=%s", withdrawResult, depositResult);
 

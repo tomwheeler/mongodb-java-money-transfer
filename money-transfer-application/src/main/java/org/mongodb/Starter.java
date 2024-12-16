@@ -62,9 +62,9 @@ public class Starter {
             System.exit(1);
         }
 
-        String idempotencyKey = UUID.randomUUID().toString();
+        String referenceId = UUID.randomUUID().toString();
 
-        TransferDetails details = new TransferDetails(sender, recipient, transferAmount, idempotencyKey);
+        TransferDetails details = new TransferDetails(sender, recipient, transferAmount, referenceId);
         logger.info("Will transfer {} from {} to {}", transferAmount, sender, recipient);
 
         String workflowId = String.format("transfer-%d-%s-to-%s", transferAmount, sender, recipient);
