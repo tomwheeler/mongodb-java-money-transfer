@@ -44,7 +44,7 @@ public class BankRepositoryImpl implements BankRepository {
 
     @Override
     public void createAccount(String bankName, int initialBalance) {
-        if (bankName == null || bankName.trim().length() == 0) {
+        if (bankName == null || bankName.trim().isEmpty()) {
             throw new IllegalArgumentException("Invalid bank name '" + bankName + "'");
         }
 
@@ -57,7 +57,7 @@ public class BankRepositoryImpl implements BankRepository {
 
     @Override
     public boolean deleteAccount(String bankName) {
-        if (bankName == null || bankName.trim().length() == 0) {
+        if (bankName == null || bankName.trim().isEmpty()) {
             return false;
         }
 
