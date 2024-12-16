@@ -9,16 +9,14 @@
     <version>1.0-SNAPSHOT</version>
 
 	<!-- 
-		NOTE: The Temporal Java SDK only requires >= JDK 8,
-		so unless MongoDB or other dependencies require 21,
-		we could relax this and broaden the audience (but
-		note that the Activity implementation uses the HTTPClient
-		added in Java 11, so that's really the minimum version
-		in the current implementation).
+		NOTE: The Temporal Java SDK only requires >= JDK 8, but the
+		HTTPClient class (used by the BankingApiClient) was added in
+		Java 11, so that's defines the minimum version in the current
+		implementation).
 	-->
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
