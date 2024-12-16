@@ -100,8 +100,7 @@ public class BankUI {
             }
         });
         
-        JScrollPane scroller = new JScrollPane(mainPanel);
-        frame.add(scroller);
+        frame.add(new JScrollPane(mainPanel));
         frame.pack();
         frame.setVisible(true);
     }
@@ -154,9 +153,9 @@ public class BankUI {
         String prompt = "Account Name";
 
         String accountName = (String)JOptionPane.showInputDialog(frame, 
-            title, prompt, JOptionPane.OK_CANCEL_OPTION, icon, null, null);
+            title, prompt, JOptionPane.QUESTION_MESSAGE, icon, null, null);
 
-        if (accountName == null || accountName.length() == 0) {
+        if (accountName == null || accountName.trim().isEmpty()) {
             return;
         }
         Runnable r = () -> {
