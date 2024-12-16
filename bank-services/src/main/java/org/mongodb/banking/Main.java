@@ -29,7 +29,6 @@ public class Main {
             MongoDatabase database = MongodbConfig.getDatabase();
             BankRepositoryImpl repository = new BankRepositoryImpl(database);
 
-            // Initialize BankManager
             logger.debug("Initializing BankManager");
             BankManager manager = new BankManager(repository);
 
