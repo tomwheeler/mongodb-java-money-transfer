@@ -23,12 +23,12 @@
         <dependency>
             <groupId>io.temporal</groupId>
             <artifactId>temporal-sdk</artifactId>
-            <version>1.26.1</version>
+            <version>1.27.0</version>
         </dependency>
         <dependency>
             <groupId>io.temporal</groupId>
             <artifactId>temporal-testing</artifactId>
-            <version>1.26.1</version>
+            <version>1.27.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -40,13 +40,13 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.14.2</version>
+            <version>2.18.2</version>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.14.2</version>
+            <version>2.18.2</version>
             <type>jar</type>
         </dependency>
         <dependency>
@@ -73,7 +73,7 @@
         <dependency>
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf-extras</artifactId>
-            <version>2.1</version>
+            <version>3.5.4</version>
         </dependency>
         <dependency>
             <groupId>com.formdev</groupId>
