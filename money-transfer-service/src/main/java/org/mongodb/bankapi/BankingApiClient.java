@@ -6,6 +6,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +46,7 @@ public class BankingApiClient {
      * @return the current balance of the specified account.
      */
     public int getBalance(String bankName) throws IOException {
-        String name = URLEncoder.encode(bankName, "UTF-8");
+        String name = URLEncoder.encode(bankName, StandardCharsets.UTF_8);
         String url = String.format("http://%s:%d/api/balance?bankName=%s", hostname, portNumber, name);
 
         String body = callService(url);
@@ -68,8 +70,8 @@ public class BankingApiClient {
      * @throws IOException if it encounters failure while making the call or parsing the response
      */
     public String deposit(String bankName, int amount, String idempotencyKey) throws IOException {
-        String name = URLEncoder.encode(bankName, "UTF-8");
-        String key = URLEncoder.encode(idempotencyKey, "UTF-8");
+        String name = URLEncoder.encode(bankName, StandardCharsets.UTF_8);
+        String key = URLEncoder.encode(idempotencyKey, StandardCharsets.UTF_8);
         String baseUrl = "http://%s:%d/api/deposit?bankName=%s&amount=%d&idempotencyKey=%s";
         String url = String.format(baseUrl, hostname, portNumber, name, amount, key);
 
@@ -94,8 +96,8 @@ public class BankingApiClient {
      * @throws Exception if a problem is encountered during the request
      */
     public String withdraw(String bankName, int amount, String idempotencyKey) throws Exception {
-        String name = URLEncoder.encode(bankName, "UTF-8");
-        String key = URLEncoder.encode(idempotencyKey, "UTF-8");
+        String name = URLEncoder.encode(bankName, StandardCharsets.UTF_8);
+        String key = URLEncoder.encode(idempotencyKey, StandardCharsets.UTF_8);
         String baseUrl = "http://%s:%d/api/withdraw?bankName=%s&amount=%d&idempotencyKey=%s";
         String url = String.format(baseUrl, hostname, portNumber, name, amount, key);
 
@@ -106,13 +108,13 @@ public class BankingApiClient {
     }
 
     private String callService(String serviceUrl) throws IOException {
-        String body = null;
+        logger.debug("Making call to URL {}", serviceUrl);
 
         URI uri = URI.create(serviceUrl);
-
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder().uri(uri).build();
 
+        String body;
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             body = response.body();
