@@ -4,11 +4,17 @@
 
 ### **1. Prerequisites**
 
+* Java 11 or higher
+* Apache Maven
+* MongoDB cluster
+* Temporal CLI
+
 ---
 
 ### **2. Environment Variables**
 
-Set the MongoDB connection string as an environment variable.
+Set the MongoDB connection string as an environment variable. 
+This is likely to be `mongodb://127.0.0.1:27017` for a local MongoDB cluster.
 
 #### **Linux/MacOS**
 
@@ -41,17 +47,16 @@ Use Maven to compile the code:
 mvn compile
 ```
 
-### **2. Run the Backend Service**
+### **2. Start the Backend Service and GUI**
 
 ```bash
 mvn exec:java -Dexec.mainClass="org.mongodb.banking.Main"
 ```
 
-This starts the REST API server on `http://localhost:8080`.
+This starts the REST API server on `http://localhost:8480`.
 It also launches a GUI that you can use to view the available 
 bank accounts and control whether each of them will accept 
 requests.
-
 
 ---
 
@@ -59,11 +64,11 @@ requests.
 
 ### **Base URL**
 
-All endpoints are available at `http://localhost:8080`.
+All endpoints are available at `http://localhost:8480`.
 
-### **1. Create a Bank**
+### **Create Account**
 
-Create a new bank account.
+Creates a new bank account.
 
 **Endpoint:**
 
@@ -74,7 +79,7 @@ GET /api/createBank?bankName={name}&initialBalance={balance}
 **Example:**
 
 ```bash
-curl -X GET "http://localhost:8080/api/createBank?bankName=DemoBank1&initialBalance=1000"
+curl -X GET "http://localhost:8480/api/createBank?bankName=Maria&initialBalance=1000"
 ```
 
 **Response:**
@@ -88,9 +93,9 @@ curl -X GET "http://localhost:8080/api/createBank?bankName=DemoBank1&initialBala
 
 ---
 
-### **2. Get Bank Balance**
+### **Get Balance**
 
-Retrieve the balance of a specific bank.
+Retrieve the balance of a bank account.
 
 **Endpoint:**
 
@@ -101,7 +106,7 @@ GET /api/balance?bankName={name}
 **Example:**
 
 ```bash
-curl -X GET "http://localhost:8080/api/balance?bankName=DemoBank1"
+curl -X GET "http://localhost:8480/api/balance?bankName=Maria"
 ```
 
 **Response:**
@@ -115,7 +120,7 @@ curl -X GET "http://localhost:8080/api/balance?bankName=DemoBank1"
 
 ---
 
-### **3. Deposit to a Bank**
+### **Deposit**
 
 Deposit money into a specific bank.
 
@@ -128,7 +133,7 @@ GET /api/deposit?bankName={name}&amount={amount}&idempotencyKey={key}
 **Example:**
 
 ```bash
-curl -X GET "http://localhost:8080/api/deposit?bankName=DemoBank1&amount=500&idempotencyKey=key123"
+curl -X GET "http://localhost:8480/api/deposit?bankName=Maria&amount=500&idempotencyKey=key123"
 ```
 
 **Response:**
@@ -142,7 +147,7 @@ curl -X GET "http://localhost:8080/api/deposit?bankName=DemoBank1&amount=500&ide
 
 ---
 
-### **4. Withdraw from a Bank**
+### **Withdraw**
 
 Withdraw money from a specific bank.
 
@@ -155,7 +160,7 @@ GET /api/withdraw?bankName={name}&amount={amount}&idempotencyKey={key}
 **Example:**
 
 ```bash
-curl -X GET "http://localhost:8080/api/withdraw?bankName=DemoBank1&amount=200&idempotencyKey=key456"
+curl -X GET "http://localhost:8480/api/withdraw?bankName=Maria&amount=200&idempotencyKey=key456"
 ```
 
 **Response:**
@@ -177,11 +182,13 @@ curl -X GET "http://localhost:8080/api/withdraw?bankName=DemoBank1&amount=200&id
     mvn exec:java -Dexec.mainClass="org.mongodb.banking.Main"
     ```
     
-2. **Test API Endpoints**: Use the provided CURL commands to interact with the service. Verify the expected responses.
+2. **Test API Endpoints**: 
+   - Use the provided `curl` commands to interact with the service. 
+   - Verify the expected responses.
     
 3. **Simulate Downtime**:
     
-    - Stop a bank in the GUI (`Stop` button).
+    - Stop a bank in the GUI (**Stop** button).
     - Attempt a transaction and observe that it fails due to the bank being offline.
 
 4. **Add and Remove Banks**:
@@ -190,7 +197,7 @@ curl -X GET "http://localhost:8080/api/withdraw?bankName=DemoBank1&amount=200&id
     - Remove a bank directly from the MongoDB database:
         
         ```bash
-        db.accounts.deleteOne({ bankName: "DemoBank1" })
+        db.accounts.deleteOne({ bankName: "Maria" })
         ```
         
     - Verify that the UI updates to reflect the changes.
@@ -201,11 +208,11 @@ curl -X GET "http://localhost:8080/api/withdraw?bankName=DemoBank1&amount=200&id
 
 ### **Environment Variable Not Set**
 
-If the application cannot connect to MongoDB, ensure the `MONGO_CONNECTION_STRING` environment variable is set correctly.
+If the application cannot connect to MongoDB, ensure the `MONGO_CONNECTION_STRING`environment variable is set correctly.
 
 ### **Service Unavailable**
 
-If the service is unreachable, ensure the backend server is running on `http://localhost:8080`.
+If the service is unreachable, ensure the backend server is running on `http://localhost:8480`.
 
 ### **MongoDB Issues**
 

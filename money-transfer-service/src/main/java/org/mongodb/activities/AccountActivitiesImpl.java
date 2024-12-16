@@ -19,7 +19,7 @@ public class AccountActivitiesImpl implements AccountActivities {
     private final BankingApiClient client;
 
     public AccountActivitiesImpl() {
-        client = new BankingApiClient("localhost", 8080);
+        client = new BankingApiClient("localhost", 8480);
     }
 
     @Override

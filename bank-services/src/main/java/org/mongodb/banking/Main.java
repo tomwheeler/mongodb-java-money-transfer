@@ -12,7 +12,7 @@ public class Main {
 
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
-    private static final int SERVICE_PORT = 8080;
+    private static final int SERVICE_PORT = 8480;
 
     public static void main(String[] args) {
         try {

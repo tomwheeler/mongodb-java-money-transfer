@@ -2,21 +2,26 @@
 
 ## How to run the code
 
-1. Start the banking services (and optionally, the GUI showing the status 
-   and account balances)
-2. Run the `main` method in the `org.mongodb.workers.ApplicationWorker` class (I'm 
-   just doing it from the IDE right now, but you could also run 
-   `mvn compile exec:java -Dexec.mainClass="org.mongodb.workers.ApplicationWorker"`
-   to do it)
-3. Run the `main` method in the `org.mongodb.Starter` class (from the IDE
-   or `mvn compile exec:java -Dexec.mainClass="org.mongodb.Starter" -Dexec.args="Alice Bob 100"`)
+1. Start the banking services (and the GUI showing the status and account 
+   balances), as described in the README for the other project.
+2. Run the `main` method in the `org.mongodb.workers.Worker` class:
+   ```
+   mvn compile exec:java -Dexec.mainClass="org.mongodb.workers.Worker"
+   ```
+3. Run the `main` method in the `org.mongodb.Starter` class to start the :
+   Workflow, specifying the sender, recipient, and amount in arguments to
+   that program:
+   ```
+   mvn compile exec:java -Dexec.mainClass="org.mongodb.Starter" -Dexec.args="Maria David 100"
+   ```
 
-
-## Potential demonstrations for the tutorial
+## Demonstrations for the tutorial
 
 1. **Happy Path**: 
    The banking services are running and the transfer completes successfully, 
-   without interruption, on the first attempt. 
+   without interruption, on the first attempt. Provided that the services 
+   are running and the accounts for Maria and David have been created, that
+   is what should happen when you run the commands above.
 
 2. **Automatic Retries**: 
    Shut down the sender's banking service and repeat the steps for the happy 
@@ -30,20 +35,19 @@
 3. **Automatic Retries** (business-level failures):
    This is similar to the above scenario, but it doesn't have to be an outage 
    that triggers a retry. It will happen with business-level failures, too. 
-   Try initiating a transfer for an amount higher than the sender's current 
-   balance to observe this. It will fail because there's insufficient funds 
-   in the account. If you add funds to the account (see the README file for 
-   the bank service to find the `curl` command that deposits money into the 
-   account), then the problem will be resolved and the Workflow will run to 
-   completion. It's also possible to customize the Retry Policy to specify a 
-   particular type of error as non-retryable, so we can make the Workflow fail 
-   in this case (should the business logic require that).
+   Try initiating a transfer using a sender for which there is no account  
+   to observe this. The withdraw call will fail because that account doesn't 
+   exist, but it will be retried. If you then created the account, then the 
+   problem will be resolved and the Workflow will run to completion. It's also
+   possible to customize the Retry Policy to specify a particular type of error 
+   as non-retryable, as is the case for insufficient funds. In that case, the 
+   Workflow will fail because our business logic demands that behavior.
 
 4. **Durable Execution**: 
-   Uncomment the `Workflow.sleep(20000)` statement in the Workflow implementation 
+   Uncomment the `Workflow.sleep` statement in the Workflow implementation 
    class (and then restart the Worker, if it's already running, so the change 
    takes effect). Re-run the Workflow as in the Happy Path scenario, but while 
-   that 20-second Timer is active (i.e., after the withdraw Activity but before 
+   that 30-second Timer is active (i.e., after the withdraw Activity but before 
    the deposit Activity), kill the Worker. Open the Temporal Web UI and observe 
    that the withdraw Activity already completed, but the deposit Activity has 
    not yet run, and that there is no progress (because the only Worker is down).
@@ -66,22 +70,22 @@
    ```bash
    $ mvn compile exec:java \
        -Dexec.mainClass="org.mongodb.Starter" \
-	   -Dexec.args="Alice Bob 100"
+       -Dexec.args="Maria David 700"
    ```
 
    The Workflow Execution will begin, but immediately block while awaiting
-   approval. You can send a Signal to grant that approval using the CLI
-   (the strange quoting for the `--input` argument is intentional, as the 
-   provided value must be in JSON format):
+   approval. You can send a Signal to grant that approval using the GUI or
+   through the CLI invocation below (the strange quoting for the `--input` 
+   argument is intentional, as the provided value must be in JSON format):
 
    ```bash
    $ temporal workflow signal \
        --workflow-id transfer-workflow-XF12345 \
-	   --name approve --input '"Ron Smith"'
+       --name approve --input '"Ron Smith"'
    ```
 
 
 ### Licensing
 * Tim and I agreed that we should use the MIT license for the code, with attribution 
-  to both MongoDB and Temporal
+  to both MongoDB and Temporal. The LICENSE file in the top-level directory reflects that,
 
