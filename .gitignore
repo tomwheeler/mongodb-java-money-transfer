@@ -10,6 +10,9 @@ target/
 # Log file
 *.log
 
+# IntelliJ directories
+.idea/
+
 # BlueJ files
 *.ctxt
 
