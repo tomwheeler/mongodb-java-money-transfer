@@ -1,9 +1,26 @@
-# Temporal-MongoDB Money Transfer Demo - Java (Work In Progress)
+# Temporal-MongoDB Money Transfer Demo - Java
+
+## Start the Temporal Service
+
+The steps that follow require a Temporal Service running locally, so start that now by
+running the command below:
+
+```
+temporal server start-dev --db-filename temporal-service.db
+```
+
+This starts the Temporal Service, with the Web UI listening on its default port (8233). 
+If that's unavailable, use the `--ui-port` option to specify a different one. 
+
+The `--db-filename` option specifies the path to the file that the Temporal Service 
+will use to store Event History and other data. It will create this file if it does 
+not exist. If this option is omitted, the Temporal Service does not persist this data 
+to disk, so it will be lost if you restart the Temporal Service.
 
 ## How to run the code
 
-1. Start the banking services (and the GUI showing the status and account 
-   balances), as described in the README for the other project.
+1. Start the banking services (and associated GUI), as described in the
+   [README for the other project](../bank-services/README.md).
 2. Run the `main` method in the `org.mongodb.workers.ApplicationWorker` class:
    ```
    mvn compile exec:java -Dexec.mainClass="org.mongodb.workers.ApplicationWorker"
