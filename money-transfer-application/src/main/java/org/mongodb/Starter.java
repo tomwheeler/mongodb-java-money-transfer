@@ -67,7 +67,7 @@ public class Starter {
         TransferDetails details = new TransferDetails(sender, recipient, transferAmount, referenceId);
         logger.info("Will transfer {} from {} to {}", transferAmount, sender, recipient);
 
-        String workflowId = String.format("transfer-%d-%s-to-%s", transferAmount, sender, recipient);
+        String workflowId = String.format("transfer-%d-%s-to-%s", transferAmount, sender, recipient).toLowerCase();
 
         WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newLocalServiceStubs();
         WorkflowClient client = WorkflowClient.newInstance(serviceStub);
