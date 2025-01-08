@@ -197,6 +197,7 @@ curl -X GET "http://localhost:8480/api/withdraw?bankName=Maria&amount=200&idempo
     - Remove a bank directly from the MongoDB database:
         
         ```bash
+        use bankingdemo
         db.accounts.deleteOne({ bankName: "Maria" })
         ```
         
